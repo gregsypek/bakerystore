@@ -61,7 +61,7 @@ const sampleData = {
     "brand": "Bakery",
     "rating": 4.6,
     "numReviews": 18,
-    "stock": 12,
+    "stock": 0,
     "isFeatured": true,
     "banner": null
   }
