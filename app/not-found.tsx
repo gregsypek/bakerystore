@@ -13,6 +13,7 @@ const NotFoundPage = () => {
 				height={68}
 				alt={`${APP_NAME} logo`}
 				priority={true}
+				unoptimized
 			/>
 			<div className="p-6 w-1/3 rounded-lg shadow-md text-center">
 				<h1 className="text-3xl font-bold mb-4">Not Found</h1>
