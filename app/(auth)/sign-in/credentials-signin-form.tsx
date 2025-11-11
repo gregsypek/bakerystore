@@ -3,12 +3,30 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { signInDefaultValues } from "@/lib/constants";
 import Link from "next/link";
+import { useActionState } from "react";
+
+//  Krok 1: Użytkownik wypełnia formularz
+// <form action={action}> {/* action z useActionState */}
+
+// Krok 2: Submit → isPending = true
+//  Formularz wysyła dane do Server Action
+
+//  Krok 3: Server Action wykonuje się
+// export async function signInWithCredentials(prevState, formData) {
+//   prevState = poprzedni state z useActionState
+//   formData = dane z formularza
+//   return { success: true, message: 'OK' }; // Nowy state
+// }
+
+//  Krok 4: state aktualizuje się wynikiem, isPending = false
 
 const CredentialsSignInForm = () => {
+	const [data, action, isPending] = useActionState(signInWithCredentials, {success: false, message: ''})
 	return (
-		<form>
+		<form action={action} >
       <div className="space-y-6">
 			<div >
 				<Label htmlFor="email">Email</Label>
@@ -33,10 +51,15 @@ const CredentialsSignInForm = () => {
 				/>
 			</div>
       <div>
-        <Button className="w-full" variant="default">
-          Sign In
-        </Button>
+ <Button 
+            className="w-full" 
+            variant="default" 
+            disabled={isPending}
+          >
+            {isPending ? 'Signing In...' : 'Sign In'}
+          </Button>
       </div>
+			{data && !data.success && (<div className="text-center text-destructive">{data.message}</div>)}
       <div className="text-sm text-center text-muted-foreground">
         Don&apos;t have an account?{" "}
         <Link href='/sign-up' target='_self' className="link">
