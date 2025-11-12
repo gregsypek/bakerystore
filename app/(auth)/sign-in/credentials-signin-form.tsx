@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { signInDefaultValues } from "@/lib/constants";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 
 //  Krok 1: Użytkownik wypełnia formularz
@@ -25,8 +26,12 @@ import { useActionState } from "react";
 
 const CredentialsSignInForm = () => {
 	const [data, action, isPending] = useActionState(signInWithCredentials, {success: false, message: ''})
+
+	const searchParams = useSearchParams();
+	const callbackUrl = searchParams.get('callbackUrl') || '/';
 	return (
 		<form action={action} >
+			<input type="hidden" name="callbackUrl" value={callbackUrl} />
       <div className="space-y-6">
 			<div >
 				<Label htmlFor="email">Email</Label>
