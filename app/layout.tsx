@@ -11,6 +11,10 @@ export const metadata: Metadata = {
     template: `%s | Bakery Store`,
     default: APP_NAME,
   },
+  icons:{
+    icon: '/favicon.ico',
+    apple:'/apple-touch-icon.png',
+  },
   description: APP_DESCRIPTION,
   metadataBase: new URL(SERVER_URL)
 };
