@@ -43,26 +43,32 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
 			email: formData.get("email"),
 			password: formData.get("password"),
 			confirmPassword: formData.get("confirmPassword"),
-    });
-    
-    const plainPassword = user.password;
+		});
+
+		const plainPassword = user.password;
 		user.password = hashSync(user.password, 10);
 
-    await prisma.user.create({
-      data: {
-        name: user.name,
-        email: user.email,
-        password: user.password
-      }
-    });
+		//prisma.user.create({
+		// data: { ... },      // WYMAGANE - dane do utworzenia
+		// select: { ... },    // opcjonalne - wybór pól do zwrócenia
+		// include: { ... }    // opcjonalne - dołączenie relacji
+		// })
 
-    await signIn("credentials", {email: user.email, password: plainPassword});
+		await prisma.user.create({
+			data: {
+				name: user.name,
+				email: user.email,
+				password: user.password,
+			},
+		});
 
-    return { success: true, message: "User registered successfully" };
-  } catch (error) {
-    if (isRedirectError(error)) {
+		await signIn("credentials", { email: user.email, password: plainPassword });
+
+		return { success: true, message: "User registered successfully" };
+	} catch (error) {
+		if (isRedirectError(error)) {
 			throw error;
 		}
 		return { success: false, message: "User was not registered" };
-  }
+	}
 }
