@@ -5,6 +5,7 @@ import { signIn, signOut } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { hashSync } from "bcrypt-ts-edge";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { formatError } from "../utils";
 
 // Sign in the user with credentials
 export async function signInWithCredentials(
@@ -66,9 +67,21 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
 
 		return { success: true, message: "User registered successfully" };
 	} catch (error) {
+	
+	//  console.log("🚀 ~ signUpUser ~ error:", error.errors);:	[
+  // {
+  //   code: 'too_small',
+  //   minimum: 3,
+  //   type: 'string',
+  //   inclusive: true,
+  //   exact: false,
+  //   message: 'Name must be at least 3 characters long',
+  //   path: [ 'name' ]
+  // }]
+		// console.log("🚀 ~ signUpUser ~ error:", error.meta?.target);
 		if (isRedirectError(error)) {
 			throw error;
 		}
-		return { success: false, message: "User was not registered" };
+		return { success: false, message: formatError(error) };
 	}
 }
