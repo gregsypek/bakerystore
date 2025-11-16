@@ -1,3 +1,4 @@
+import { Product } from '@/types';
 import { z } from 'zod'
 import { formatNumberWithDecimal } from './utils'
 
@@ -40,3 +41,23 @@ export const signUpFormSchema = z.object({
   message: "Passwords do not match",
   path: ["confirmPassword"],
 });
+
+// Cart Schemas 
+export const cartItemSchema = z.object({
+  productId: z.string().min(1, "Product ID is required"),
+  name: z.string().min(1, "Product name must be at least 1 characters long"),
+  slug: z.string().min(1, "Product slug must be at least 1 characters long"),
+  qty: z.number().int().nonnegative("Quantity must be a non-negative integer"),
+  image: z.string().min(1, "Product image is required"),
+  price: currency
+})
+
+export const insertCartSchema = z.object({
+  items: z.array(cartItemSchema),
+  itemsPrice: currency,
+  totalPrice: currency,
+  shippingPrice: currency,
+  taxPrice: currency,
+  sessionCartId: z.string().min(1, "Session cart ID is required"),
+  userId: z.string().optional().nullable() // In summary, the userId in the insertCartSchema is essential for linking a user to their cart in the database, ensuring that their cart items can be easily retrieved upon their next login
+})
