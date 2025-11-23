@@ -18,7 +18,7 @@ export function convertToPlainObject<T>(value: T): T {
 export function formatNumberWithDecimal(num: number): string {
 	const [int, decimal] = num.toString().split(".");
 	// string.padEnd(docelowaDługość, znakDoPełnienia)
-	return decimal ? `${int}.${decimal.padEnd(2, "0")}` : `{int}.00`;
+	return decimal ? `${int}.${decimal.padEnd(2, "0")}` : `${int}.00`;
 }
 
 /**
@@ -101,4 +101,15 @@ export function formatError(error: unknown): string {
 
 	// 5. Fallback
 	return "An unexpected error occurred.";
+}
+
+// Round number to 2 decimal places
+export function round2(value: number | string) {
+	if (typeof value === "number") {
+		return Math.round((value + Number.EPSILON) * 100) / 100; // Epsilon to bardzo mała liczba dodawana, aby uniknąć błędów zaokrągleń
+	}else if (typeof value === "string") {
+		return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+	} else {
+		throw new Error("Invalid value type");
+	}
 }
