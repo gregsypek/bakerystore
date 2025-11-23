@@ -12,7 +12,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
 
 	const handleAddToCart = async () => {
 		const res = await addItemToCart(item);
-		console.log("🚀 ~ handleAddToCart ~ res:", res);
+		console.log("🚀 ~ handleAddToCart ~ res:", res.message);
 
 		if (!res.success) {
 			toast.error(res.message, {
@@ -27,8 +27,9 @@ const AddToCart = ({ item }: { item: CartItem }) => {
 			return;
 		}
 
-		toast.success(`${item.name} added to cart`, {
-			unstyled: false,// to keep user styles change to true
+		toast.success(res.message, {
+			// description: res.message,
+			unstyled: false, // to keep user styles change to true
 			classNames: {
 				toast:
 					"flex items-center gap-3 rounded-md border shadow-md px-4 py-3 bg-green-50 border-green-200 text-green-900",

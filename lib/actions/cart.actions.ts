@@ -26,7 +26,7 @@ export const calcPrice = async (items: CartItem[]) => {
 };
 
 export async function addItemToCart(data: CartItem) {
-	console.log("🚀 ~ addItemToCart ~ data:", data);
+	// console.log("🚀 ~ addItemToCart ~ data:", data);
 	try {
 		// Check for cart cookie
 		const allCookies = await cookies();
@@ -39,27 +39,21 @@ export async function addItemToCart(data: CartItem) {
 			allCookies.get("next-auth.session-token")?.value ??
 			allCookies.get("next-auth.callback-url")?.value ??
 			undefined;
-		console.log("🚀 ~ addItemToCart ~ sessionCartId:", sessionCartId);
+		// console.log("🚀 ~ addItemToCart ~ sessionCartId:", sessionCartId);
 
 		//  Get session and user ID
-		// Spróbuj przekazać cookies() do auth() jeśli implementacja to wspiera
-		let session;
-		try {
-			session = await auth({ cookies: allCookies } as any); // jeśli auth przyjmuje kontekst, użyj go; as any żeby nie łamać typów
-		} catch (e) {
-			// fallback na wywołanie bez argumentów
-			session = await auth();
-		}
+		// NOTE: auth() w NextAuth 5 automatycznie ma dostęp do cookies (działa w Server Components i Server Actions)
+		const session = await auth();
 		const userId = session?.user?.id;
-		console.log("🚀 ~ addItemToCart ~ userId:", userId);
+	
+		// console.log("🚀 ~ addItemToCart ~ userId:", userId);
 
 		// Get cart
 		const cart = await getMyCart();
-
+		// console.log("🚀 ~ Current cart:", JSON.stringify(cart, null, 2));
 		// Parse and validate item
 		const item = cartItemSchema.parse(data);
-		console.log("🚀 ~ addItemToCart ~ item:", item);
-
+		// console.log("🚀 ~ Item to add:", item);
 		// Find product in database
 
 		const product = await prisma.product.findFirst({
@@ -71,9 +65,6 @@ export async function addItemToCart(data: CartItem) {
 
 		if (!cart) {
 			// Create new cart
-			const prices = await calcPrice([item]);
-			console.log("🚀 ~ addItemToCart ~ prices:", prices); // Dodaj to!
-
 			const newCart = insertCartSchema.parse({
 				userId: userId,
 				items: [item],
@@ -91,8 +82,68 @@ export async function addItemToCart(data: CartItem) {
 
 			return {
 				success: true,
-				message: "Item added to cart successfully",
+				message: `${product.name} added to cart successfully`,
 			};
+		} else {
+			//  console.log("🚀 ~ Cart exists, items:", cart.items);
+			// Check if item exists in cart
+			const existItem = (cart.items as CartItem[]).find(
+				(x) => x.productId === item.productId
+			);
+			//  console.log("🚀 ~ existItem found:", existItem);
+
+			if (existItem) {
+				// console.log("🚀 ~ RETURNING UPDATE MESSAGE");
+				// Check stock
+				if (product.stock < existItem.qty + 1) {
+					throw new Error("Product is out of stock");
+				}
+
+				// Increase the quantity - POPRAWIONA WERSJA
+				(cart.items as CartItem[]) = (cart.items as CartItem[]).map((x) =>
+					x.productId === item.productId ? { ...x, qty: x.qty + 1 } : x
+				);
+				// Save to database
+				await prisma.cart.update({
+					where: { id: cart.id },
+					data: {
+						items: cart.items,
+						...(await calcPrice(cart.items as CartItem[])),
+					},
+				});
+
+				// Revalidate product page
+				revalidatePath(`/product/${product.slug}`);
+
+				return {
+					success: true,
+					message: `${product.name} updated in cart successfully`,
+				};
+			} else {
+				// If item does not exist in cart
+				// Check stock
+				if (product.stock < 1) throw new Error("Product is out of stock");
+
+				// Add items to the cart.items
+				cart.items.push(item);
+
+				// Save to database
+				await prisma.cart.update({
+					where: { id: cart.id },
+					data: {
+						...(await calcPrice(cart.items as CartItem[])),
+						items: cart.items,
+					},
+				});
+
+				// Revalidate product page
+				revalidatePath(`/product/${product.slug}`);
+
+				return {
+					success: true,
+					message: `${product.name} added to cart successfully`,
+				};
+			}
 		}
 
 		// TESTING
@@ -101,7 +152,6 @@ export async function addItemToCart(data: CartItem) {
 		// console.log("🚀 ~ addItemToCart ~ session:", session)
 		// console.log("🚀 ~ addItemToCart ~ sessionCartId:", sessionCartId)
 		// console.log("🚀 ~ addItemToCart ~ userId:", userId)
-		
 	} catch (error) {
 		return {
 			success: false,
@@ -122,17 +172,11 @@ export async function getMyCart() {
 		allCookies.get("next-auth.session-token")?.value ??
 		allCookies.get("next-auth.callback-url")?.value ??
 		undefined;
-
-	//  Get session and user ID
-	// Spróbuj przekazać cookies() do auth() jeśli implementacja to wspiera
-	let session;
-	try {
-		session = await auth({ cookies: allCookies } as any); // jeśli auth przyjmuje kontekst, użyj go; as any żeby nie łamać typów
-	} catch (e) {
-		// fallback na wywołanie bez argumentów
-		session = await auth();
-	}
-	const userId = session?.user?.id;
+	
+	
+		// Get session and user ID
+		const session = await auth();
+		const userId = session?.user?.id;
 
 	// Get user cart from database based on userId or sessionCartId
 	const cart = await prisma.cart.findFirst({
