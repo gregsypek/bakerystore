@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
-import { CartItem } from "@/types";
-import { addItemToCart } from "@/lib/actions/cart.actions";
+import { Minus, Plus } from "lucide-react";
+import { Cart, CartItem } from "@/types";
+import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 import { toast } from "sonner";
 
-const AddToCart = ({ item }: { item: CartItem }) => {
+const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
 	const router = useRouter();
 
 	const handleAddToCart = async () => {
@@ -46,7 +46,33 @@ const AddToCart = ({ item }: { item: CartItem }) => {
 		});
 	};
 
-	return (
+	// Check if item is already in cart
+	const existItem =
+		cart && cart.items.find((x) => x.productId === item.productId);
+
+	const handleRemoveFromCart = async () => {
+		const res = await removeItemFromCart(item.productId);
+		console.log("🚀 ~ handleRemoveFromCart ~ res:", res.message);
+
+		if (!res.success) {
+			toast.error(res.message);
+			return;
+		}
+		toast.success(res.message);
+
+		return;
+	};
+	return existItem ? (
+		<div className="flex items-center">
+			<Button type="button" variant="outline" onClick={handleRemoveFromCart}>
+				<Minus className="h-4 w-4" />
+			</Button>
+			<span className="px-2">{existItem.qty}</span>
+			<Button type="button" variant="outline" onClick={handleAddToCart}>
+				<Plus className="h-4 w-4" />
+			</Button>
+		</div>
+	) : (
 		<Button className="w-full" type="button" onClick={handleAddToCart}>
 			<Plus className="mr-2 h-4 w-4" />
 			Add To Cart
