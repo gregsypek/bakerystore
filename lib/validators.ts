@@ -61,3 +61,14 @@ export const insertCartSchema = z.object({
   sessionCartId: z.string().min(1, "Session cart ID is required"),
   userId: z.string().optional().nullable() // In summary, the userId in the insertCartSchema is essential for linking a user to their cart in the database, ensuring that their cart items can be easily retrieved upon their next login
 })
+
+// Schema for the shipping address
+export const shippingAddressSchema = z.object({
+  fullName: z.string().min(3, "Full name must be at least 3 characters long"),
+  streetAddress: z.string().min(5, "Address must be at least 5 characters long"),
+  city: z.string().min(2, "City must be at least 2 characters long"),
+  postalCode: z.string().min(2, "Postal code must be at least 2 characters long"),
+  country: z.string().min(2, "Country must be at least 2 characters long"),
+lat: z.number().optional(),
+lng: z.number().optional(),
+})
