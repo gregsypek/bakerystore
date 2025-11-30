@@ -113,3 +113,22 @@ export function round2(value: number | string) {
 		throw new Error("Invalid value type");
 	}
 }
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+	minimumFractionDigits: 2,
+	// maximumFractionDigits: 2,
+});
+
+// Format currency using the formatter above
+export function formatCurrency(amount: number | string | null) {
+	if (typeof amount === "number") {
+		return CURRENCY_FORMATTER.format(amount);
+	 } else if (typeof amount === "string") {
+		return CURRENCY_FORMATTER.format(Number(amount));
+	 } else {
+		// return CURRENCY_FORMATTER.format(0);
+		return 'NaN'
+	 }
+}

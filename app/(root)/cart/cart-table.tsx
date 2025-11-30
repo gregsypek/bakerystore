@@ -11,13 +11,19 @@ import {
 import { Cart } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
+
+import React, { useTransition } from "react";
 import AddButton from "./add-button";
 import RemoveButton from "./remove-button";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Loader } from "lucide-react";
 
 export default function CartTable({ cart }: { cart?: Cart }) {
-	const router = useRouter;
+	const router = useRouter();
+	const [isPending, startTransition] = useTransition();
 	return (
 		<>
 			<h1 className="py-4 h2-bold">Shopping Cart</h1>
@@ -64,6 +70,31 @@ export default function CartTable({ cart }: { cart?: Cart }) {
 							</TableBody>
 						</Table>
 					</div>
+					<Card>
+						<CardContent className="p-4 gap-4">
+							<div className="pb-3 text-xl">
+								Subtotal({cart.items.reduce((a, c) => a + c.qty, 0)}
+								{""})
+								<span className="font-bold">
+									{formatCurrency(cart.itemsPrice)}
+								</span>
+							</div>
+							<Button
+								className="w-full"
+								disabled={isPending}
+								onClick={() =>
+									startTransition(() => router.push("/shipping-address"))
+								}
+							>
+								{isPending ? (
+									<Loader className="w-4 h-4 animate-spin" />
+								) : (
+									<ArrowRight className="w-4" />
+								)}{" "}
+								Procceed to Checkout
+							</Button>
+						</CardContent>
+					</Card>
 				</div>
 			)}
 		</>
