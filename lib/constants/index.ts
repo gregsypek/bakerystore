@@ -20,7 +20,7 @@ export const signUpDefaultValues = {
 
 export const shippingAddressDefaultValues = {
   fullName: "John Doe",
-  address: "123 Baker St",
+  streetAddress: "123 Baker St",
   city: "Anytown",
   postalCode: "12345",
   country: "USA",
