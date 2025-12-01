@@ -16,6 +16,7 @@ const Header = () => {
 							height={48}
 							width={48}
 							priority={true}
+							style={{ width: "auto", height: "48px" }}
 						/>
 						<span className="hidden lg:block font-bold text-2xl ml-3">
 							{APP_NAME}
