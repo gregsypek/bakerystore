@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { ShippingAddress } from "@/types";
@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 	const router = useRouter();
@@ -30,11 +31,19 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 		defaultValues: address || shippingAddressDefaultValues,
 	});
 
-	const onSubmit = async (data: z.infer<typeof shippingAddressSchema>) => {
-		startTransition(() => {
-			console.log("Shipping Address Data:", data);
-			toast.success("Shipping address saved successfully!");
-			// router.push("/payment");
+	// NOTE: SubmitHandler to typ z react-hook-form, który definiuje jak funkcja obsługująca formularz powinna wyglądać
+	// TypeScript automatycznie wywnioskuje typ data na podstawie generyka w SubmitHandler
+
+	const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (
+		values
+	) => {
+		startTransition(async () => {
+			const res = await updateUserAddress(values);
+			if (!res.success) {
+				toast.error(res.message);
+				return;
+			}
+			router.push("/payment-method");
 		});
 	};
 	return (
