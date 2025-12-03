@@ -7,6 +7,8 @@ import { hashSync } from "bcrypt-ts-edge";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 // Sign in the user with credentials
 export async function signInWithCredentials(
@@ -34,7 +36,8 @@ export async function signInWithCredentials(
 
 // Sign out the user
 export async function signOutUser() {
-	await signOut();
+  await signOut({ redirectTo: "/", redirect: true });
+  revalidatePath("/", "layout");
 }
 
 // Sign up user

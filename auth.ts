@@ -1,81 +1,96 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/db/prisma";
-import { compareSync } from "bcrypt-ts-edge";
-import { authConfig } from "./auth.config";
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from '@/db/prisma';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { compareSync } from 'bcrypt-ts-edge';
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-	...authConfig,
-	adapter: PrismaAdapter(prisma), // Łączy NextAuth z bazą danych przez Prisma. Automatycznie zarządza tabelami: User, Account, Session, VerificationToken
-	session: {
-		// This is because this value has to be one of 3 values ("jwt" | "database" | undefined) and we want to make sure it's always "jwt" and not a string that could be anything. Here, strategy is no longer inferred as string; it is inferred as the literal type "jwt".
-		strategy: "jwt" as const,
-		maxAge: 30 * 24 * 60 * 60, // 30 days
-	},
-	providers: [
-		CredentialsProvider({
-			credentials: {
-				email: { type: "email" },
-				password: { type: "password" },
-			},
-			async authorize(credentials) {
-				if (credentials == null) return null;
+import { authConfig } from './auth.config';
+import NextAuth from 'next-auth';
 
-				// Find user in database
-				const user = await prisma.user.findFirst({
-					where: { email: credentials.email as string },
-				});
-				// Check if user exists and password matches
-				if (user && user.password) {
-					const isMatch = compareSync(
-						credentials.password as string,
-						user.password
-					);
-					// If password is correct, return user object
-					if (isMatch) {
-						return {
-							id: user.id,
-							name: user.name,
-							email: user.email,
-							role: user.role,
-						};
-					}
-				}
-				// If user does not exist or password is incorrect, return null
-				return null;
-			},
-		}),
-	],
-	callbacks: {
-		...authConfig.callbacks,
-		async session({ session, token, trigger }: any) {
-			session.user.id = token.sub;
-			session.user.role = token.role;
-			session.user.name = token.name;
-			// If there is an update, set the user name
-			if (trigger === "update") {
-				session.user.name = token.name;
-			}
+export const config = {
+  pages: {
+    signIn: '/sign-in',
+    error: '/sign-in',
+  },
+  session: {
+    // This is because this value has to be one of 3 values ("jwt" | "database" | undefined) and we want to make sure it's always "jwt" and not a string that could be anything. Here, strategy is no longer inferred as string; it is inferred as the literal type "jwt".
+    strategy: 'jwt' as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  adapter: PrismaAdapter(prisma),
+  // Łączy NextAuth z bazą danych przez Prisma. Automatycznie zarządza tabelami: User, Account, Session, VerificationToken
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: { type: 'email' },
+        password: { type: 'password' },
+      },
+      async authorize(credentials) {
+        if (credentials == null) return null;
 
-			return session;
-		},
-		async jwt({ token, user }: any) {
-			if (user) {
-				// If user has no name then use the email
-				token.role = user.role;
+        // Find user in database
+        const user = await prisma.user.findFirst({
+          where: {
+            email: credentials.email as string,
+          },
+        });
 
-				if (user.name === "NO_NAME") {
-					token.name = user.email!.split("@")[0];
-					// Update database to reflect the token name
-					await prisma.user.update({
-						where: { id: user.id },
-						data: { name: token.name },
-					});
-				}
-			}
+        // Check if user exists and if the password matches
+        if (user && user.password) {
+          const isMatch = compareSync(
+            credentials.password as string,
+            user.password
+          );
 
-			return token;
-		},
-	},
-});
+          // If password is correct, return user
+          if (isMatch) {
+            return {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+            };
+          }
+        }
+        // If user does not exist or password does not match return null
+        return null;
+      },
+    }),
+  ],
+  callbacks: {
+    ...authConfig.callbacks,
+    async session({ session, user, trigger, token }: any) {
+      // Set the user ID from the token
+      session.user.id = token.sub;
+      session.user.role = token.role;
+      session.user.name = token.name;
+
+      // If there is an update, set the user name
+      if (trigger === 'update') {
+        session.user.name = user.name;
+      }
+
+      return session;
+    },
+    async jwt({ token, user, trigger, session }: any) {
+      // Assign user fields to token
+      if (user) {
+        token.role = user.role;
+
+        // If user has no name then use the email
+        if (user.name === 'NO_NAME') {
+          token.name = user.email!.split('@')[0];
+
+          // Update database to reflect the token name
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { name: token.name },
+          });
+        }
+      }
+      return token;
+    },
+  
+  },
+} 
+
+export const { handlers, auth, signIn, signOut } = NextAuth(config);

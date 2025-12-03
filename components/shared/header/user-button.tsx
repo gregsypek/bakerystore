@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { auth } from "@/auth";
+import { signOutUser } from "@/lib/actions/user.actions";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -7,12 +9,11 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOutUser } from "@/lib/actions/user.actions";
 import { UserIcon } from "lucide-react";
-import Link from "next/link";
 
 const UserButton = async () => {
 	const session = await auth();
+
 	if (!session) {
 		return (
 			<Button asChild>
@@ -23,7 +24,7 @@ const UserButton = async () => {
 		);
 	}
 
-	const firstInitial = session.user?.name?.charAt(0).toUpperCase() || "U";
+	const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U";
 
 	return (
 		<div className="flex gap-2 items-center">
@@ -32,7 +33,7 @@ const UserButton = async () => {
 					<div className="flex items-center">
 						<Button
 							variant="ghost"
-							className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200 dark:bg-gray-800 text-white"
+							className="relativee w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200"
 						>
 							{firstInitial}
 						</Button>
