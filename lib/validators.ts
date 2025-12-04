@@ -1,6 +1,7 @@
 import { Product } from '@/types';
 import { z } from 'zod'
 import { formatNumberWithDecimal } from './utils'
+import { PAYMENT_METHODS } from './constants';
 
 
 // .refine(
@@ -72,3 +73,11 @@ export const shippingAddressSchema = z.object({
 lat: z.number().optional(),
 lng: z.number().optional(),
 })
+
+// Schema for payment method
+export const paymentMethodSchema = z.object({
+ type:z.string().min(1, "Payment method type is required"),
+  })
+  //refine to custom walidacja - dodajesz własną logikę sprawdzania:
+  // path: ['type'] Wskazuje że błąd dotyczy pola type
+  .refine((data)=>PAYMENT_METHODS.includes(data.type), {path: ['type'], message: 'Invalid payment method'})
