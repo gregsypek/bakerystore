@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { auth } from "@/auth";
-import { signOutUser } from "@/lib/actions/user.actions";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserIcon } from "lucide-react";
+import { SignOutButton } from "./sign-out-button";
 
 const UserButton = async () => {
 	const session = await auth();
@@ -50,7 +49,7 @@ const UserButton = async () => {
 							</div>
 						</div>
 					</DropdownMenuLabel>
-					<DropdownMenuItem className="p-0 mb-1">
+					{/* <DropdownMenuItem className="p-0 mb-1" asChild>
 						<form action={signOutUser} className="w-full">
 							<Button
 								className="w-full py-4 px-2 h-4 justify-start"
@@ -59,7 +58,8 @@ const UserButton = async () => {
 								Sign Out
 							</Button>
 						</form>
-					</DropdownMenuItem>
+					</DropdownMenuItem>  commented due to problem with signOutUser function invoke*/}
+					<SignOutButton />
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>

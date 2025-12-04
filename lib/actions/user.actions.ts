@@ -36,8 +36,12 @@ export async function signInWithCredentials(
 
 // Sign out the user
 export async function signOutUser() {
-  await signOut({ redirectTo: "/", redirect: true });
+	
+  const cookiesStore = await cookies();
+  cookiesStore.delete("sessionCartId");
+
   revalidatePath("/", "layout");
+  await signOut({ redirectTo: "/", redirect: true });
 }
 
 // Sign up user
