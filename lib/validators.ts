@@ -102,5 +102,7 @@ export const paymentMethodSchema = z.object({
     productId: z.string(),
     slug: z.string(),
     image: z.string(),
-    name: z.string()
+    name: z.string(),
+    price:currency,
+    qty: z.number()
   })
