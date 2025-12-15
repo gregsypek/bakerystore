@@ -9,13 +9,17 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { updateProfile } from "@/lib/actions/user.actions";
 import { updateProfileSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 const ProfileForm = () => {
+	const router = useRouter();
 	const { data: session, update } = useSession();
 
 	const form = useForm<z.infer<typeof updateProfileSchema>>({
@@ -26,8 +30,23 @@ const ProfileForm = () => {
 		},
 	});
 
-	const onSubmit = () => {
-		return;
+	const onSubmit = async (values: z.infer<typeof updateProfileSchema>) => {
+		const res = await updateProfile(values)
+		if(!res.success) {
+			return toast.error(res.message || 'Failed to update profile')
+		}
+
+		const newSession = {
+			...session,
+			user: {
+				...session?.user,
+				name: values.name
+			}
+		}
+		await update(newSession)
+
+		toast.success(res.message || 'Profile updated successfully')
+		router.refresh()
 	};
 	return (
 		<Form {...form}>
