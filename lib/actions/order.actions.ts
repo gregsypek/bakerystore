@@ -121,7 +121,7 @@ export async function createPayPalOrder(orderId: string) {
 		if (order) {
 			// Create paypal order
 			const paypalOrder = await paypal.createOrder(Number(order.totalPrice));
-			console.log("🚀 ~ createPayPalOrder ~ paypalOrder:", paypalOrder);
+			// console.log("🚀 ~ createPayPalOrder ~ paypalOrder:", paypalOrder);
 
 			// Update order with paypal order id
 			await prisma.order.update({
