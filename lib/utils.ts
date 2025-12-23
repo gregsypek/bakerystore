@@ -37,15 +37,9 @@ export function formatError(error: unknown): string {
 	console.log("🚀 ~ formatError ~ error:", error);
 	// 1. Obsługa błędów walidacji Zod
 	if (error instanceof ZodError) {
-		//     ~ formatError ~ messages: [
-		//   'name: Name must be at least 3 characters long',
-		//   'email: Invalid email address',
-		//   'password: Password must be at least 6 characters long',
-		//   'confirmPassword: Confirm password must be at least 6 characters long',
-		//   'confirmPassword: Passwords do not match'
-		// ]
-		const messages = error.errors.map((err) => {
-			return `${err.message}`;
+		const messages = error.issues.map((issue) => {
+			console.log("🚀 ~ formatError ~ issue:", issue)
+			return `${issue.path.join(".")}: ${issue.message}`;
 		});
 		console.log("🚀 ~ formatError ~ messages:", messages);
 		return messages.join("; ");
@@ -135,12 +129,11 @@ export function formatCurrency(amount: number | string | null) {
 }
 
 // Format Number ( to ensure commas is in right place in thousands)
-const NUMBER_FORMATTER = new Intl.NumberFormat('en-US');
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
 
 export function formatNumber(number: number) {
 	return NUMBER_FORMATTER.format(number);
 }
-
 
 export function formatId(id: string) {
 	return `..${id.substring(id.length - 6)}`;
@@ -198,7 +191,7 @@ export function formUrlQuery({
 }) {
 	const query = qs.parse(params);
 	query[key] = value;
-	
+
 	return qs.stringifyUrl(
 		{
 			url: window.location.pathname,

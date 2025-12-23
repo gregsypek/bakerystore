@@ -327,3 +327,25 @@ export async function getOrderSummary() {
 		latestSales
 		}
 }
+
+// Get all orders
+export async function getAllOrders({
+	limit = PAGE_SIZE,
+	page
+}: {
+		limit?: number;
+		page: number;
+	}) {
+	const data = await prisma.order.findMany({
+		orderBy: { createdAt: "desc" }, // sortuj od najnowszych
+		take: limit, // weź 10 rekordów
+		skip: (page - 1) * limit,  // pomiń poprzednie strony
+		include: { user: { select: { name: true } } } // dołącz powiązanego użytkownika  (ale tylko jego imię)
+	});
+	const dataCount = await prisma.order.count();
+	
+	return {
+		data,
+		totalPages: Math.ceil(dataCount / limit),
+	}
+}
