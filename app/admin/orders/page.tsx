@@ -29,7 +29,7 @@ const AdminOrdersPage = async (props: {
 		page: Number(page),
 		// limit: 2,
 	});
-	console.log("🚀 ~ AdminOrdersPage ~ orders:", orders);
+	// console.log("🚀 ~ AdminOrdersPage ~ orders:", orders);
 	return (
 		<div className="space-y-2">
 			<h2 className="h2-bold">Orders</h2>
