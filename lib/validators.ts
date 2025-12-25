@@ -19,11 +19,13 @@ export const insertProductSchema = z.object({
   category: z.string().min(3, "Category must be at least 3 characters long"),
   brand: z.string().min(2, "Brand must be at least 2 characters long"),
   description: z.string().min(10, "Description must be at least 10 characters long"),
-  stock: z.coerce.number(),
+  stock: z.coerce.number().int().min(0, "Stock cannot be negative"),
   images: z.array(z.string()).min(1, 'At least one image is required'),
   isFeatured: z.boolean().optional(),
   banner: z.string().optional().nullable(),
-  price: currency
+  price: currency,
+  // rating: z.string().optional(), // Add if needed
+  // numReviews: z.string().optional(), // Add if needed
 })  
 
 // Schema for updating products

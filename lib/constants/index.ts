@@ -36,16 +36,16 @@ export const DEFAULT_PAYMENT_METHOD =
   export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10
 
   export const productDefaultValues = {
-    name:"",
+    name:"Zosia",
     slug:"",
-    category:"",
+    category:"sweets",
     images:[],
-    brand:'',
-    description:'',
+    brand:'Plurabis',
+    description:'Zosia is sweet',
     price:'0',
-    stock:'0',
-    rating:'0',
-    numReviews:'0',
+    stock:0,
+    // rating:'0',
+    // numReviews:'0',
     isFeatured:false,
     banner:null,
   }
