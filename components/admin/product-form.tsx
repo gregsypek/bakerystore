@@ -5,7 +5,12 @@ import { insertProductSchema, updateProductSchema } from "@/lib/validators";
 import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
+import {
+	ControllerRenderProps,
+	SubmitHandler,
+	useForm,
+	useWatch,
+} from "react-hook-form";
 import {
 	Form,
 	FormControl,
@@ -21,6 +26,9 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { toast } from "sonner";
+import { UploadButton } from "@/lib/uploadthing";
+import Image from "next/image";
+import { Card, CardContent } from "../ui/card";
 
 const ProductForm = ({
 	type,
@@ -39,6 +47,15 @@ const ProductForm = ({
 		resolver: zodResolver(schema),
 		defaultValues:
 			product && type === "Update" ? product : productDefaultValues,
+	});
+	// NOTE: React Compiler (nowość w React 19) automatycznie memoizuje komponenty dla lepszej wydajności
+	//const images = form.watch('images') -  form.watch() tworzy subskrypcję, która może się zmieniać między renderami (WRONG APPROACH)
+	// Jeśli React zmemoizuje komponent z przestarzałą referencją do watch(), UI może nie odświeżyć się poprawnie
+	// useWatch jest zaprojektowany tak, żeby działać z React Compiler
+	const images = useWatch({
+		control: form.control,
+		name: "images",
+		defaultValue: [],
 	});
 
 	const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
@@ -71,7 +88,6 @@ const ProductForm = ({
 			}
 		}
 	};
-
 	return (
 		<Form {...form}>
 			<form
@@ -238,6 +254,43 @@ const ProductForm = ({
 				</div>
 				<div className="upload-field flex flex-col md:flex-row gap-5">
 					{/* Images */}
+					<FormField
+						control={form.control}
+						name="images"
+						render={() => (
+							<FormItem className="w-full">
+								<FormLabel>Images</FormLabel>
+								<Card>
+									<CardContent className="space-y-2 mt-2 min-h-48">
+										<div className="flex-start space-x-2">
+											{images.map((image: string) => (
+												<Image
+													key={image}
+													src={image}
+													alt="product image"
+													className="w-20 h-20 object-cover object-center rounded-sm"
+													width={100}
+													height={100}
+												/>
+											))}
+											<FormControl>
+												<UploadButton
+													endpoint="imageUploader"
+													onClientUploadComplete={(res: { url: string }[]) => {
+														form.setValue("images", [...images, res[0].url]);
+													}}
+													onUploadError={(error: Error) => {
+														toast.error(`ERROR! ${error.message}`);
+													}}
+												/>
+											</FormControl>
+										</div>
+									</CardContent>
+								</Card>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 				</div>
 				<div className="upload-field">{/* isFeatured */}</div>
 				<div>
