@@ -37,7 +37,7 @@ export const DEFAULT_PAYMENT_METHOD =
 
   export const productDefaultValues = {
     name:"Zosia",
-    slug:"",
+    slug:"zosia",
     category:"sweets",
     images:[],
     brand:'Plurabis',
