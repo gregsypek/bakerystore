@@ -9,7 +9,6 @@ import z from "zod";
 import { insertProductSchema, updateProductSchema } from "../validators";
 
 // Get latest products
-
 export async function getLatestProducts() {
 	// const prisma = new PrismaClient();
 
@@ -25,6 +24,14 @@ export async function getProductBySlug(slug: string) {
 	return await prisma.product.findFirst({
 		where: { slug: slug },
 	});
+}
+// Get single product by it's ID
+export async function getProductById(productId: string) {
+	const data = await prisma.product.findFirst({
+		where: { id: productId },
+	});
+
+	return convertToPlainObject(data);
 }
 
 // Get all products

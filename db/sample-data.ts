@@ -30,7 +30,7 @@ const sampleData = {
     "numReviews": 10,
     "stock": 5,
     "isFeatured": true,
-    "banner": "banner-1.jpg"
+    "banner": "/images/banner-1.jpg"
   },
   {
     "name": "Chocolate Muffin",
@@ -47,7 +47,7 @@ const sampleData = {
     "numReviews": 15,
     "stock": 8,
     "isFeatured": true,
-    "banner": "banner-2.jpg"
+    "banner": "/images/banner-1.jpg"
   },
   {
     "name": "Sourdough Bread",

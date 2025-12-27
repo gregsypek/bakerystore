@@ -57,7 +57,7 @@ const ProductForm = ({
 	const images = useWatch({
 		control: form.control,
 		name: "images",
-		defaultValue: [],
+		defaultValue: form.getValues("images") || [],
 	});
 	const isFeatured = useWatch({
 		control: form.control,
@@ -67,8 +67,10 @@ const ProductForm = ({
 	const banner = useWatch({
 		control: form.control,
 		name: "banner",
-		defaultValue: null,
+		defaultValue: product?.banner,
 	});
+
+	// console.log("🚀 ~ ProductForm ~ banner:", banner);
 
 	const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
 		values
@@ -324,7 +326,7 @@ const ProductForm = ({
 									</FormItem>
 								)}
 							/>
-							{isFeatured && banner && (
+							{isFeatured && banner != null && (
 								<Image
 									src={banner}
 									alt="banner image"
