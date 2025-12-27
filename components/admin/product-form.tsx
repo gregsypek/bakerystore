@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { UploadButton } from "@/lib/uploadthing";
 import Image from "next/image";
 import { Card, CardContent } from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
 
 const ProductForm = ({
 	type,
@@ -40,7 +41,6 @@ const ProductForm = ({
 	productId?: string;
 }) => {
 	const router = useRouter();
-
 	const schema = type === "Update" ? updateProductSchema : insertProductSchema;
 
 	const form = useForm({
@@ -48,14 +48,26 @@ const ProductForm = ({
 		defaultValues:
 			product && type === "Update" ? product : productDefaultValues,
 	});
+
 	// NOTE: React Compiler (nowość w React 19) automatycznie memoizuje komponenty dla lepszej wydajności
 	//const images = form.watch('images') -  form.watch() tworzy subskrypcję, która może się zmieniać między renderami (WRONG APPROACH)
 	// Jeśli React zmemoizuje komponent z przestarzałą referencją do watch(), UI może nie odświeżyć się poprawnie
 	// useWatch jest zaprojektowany tak, żeby działać z React Compiler
+
 	const images = useWatch({
 		control: form.control,
 		name: "images",
 		defaultValue: [],
+	});
+	const isFeatured = useWatch({
+		control: form.control,
+		name: "isFeatured",
+		defaultValue: false,
+	});
+	const banner = useWatch({
+		control: form.control,
+		name: "banner",
+		defaultValue: null,
 	});
 
 	const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
@@ -292,7 +304,49 @@ const ProductForm = ({
 						)}
 					/>
 				</div>
-				<div className="upload-field">{/* isFeatured */}</div>
+				<div className="upload-field">
+					{/* isFeatured */}
+					Featured Product
+					<Card>
+						<CardContent className="space-y-2 mt-2">
+							<FormField
+								control={form.control}
+								name="isFeatured"
+								render={({ field }) => (
+									<FormItem className="flex space-x-1 items-center">
+										<FormControl>
+											<Checkbox
+												checked={field.value}
+												onCheckedChange={field.onChange}
+											/>
+										</FormControl>
+										<FormLabel>Is Featured?</FormLabel>
+									</FormItem>
+								)}
+							/>
+							{isFeatured && banner && (
+								<Image
+									src={banner}
+									alt="banner image"
+									className="w-full object-cover object-center rounded-sm"
+									width={1920}
+									height={680}
+								/>
+							)}
+							{isFeatured && !banner && (
+								<UploadButton
+									endpoint="imageUploader"
+									onClientUploadComplete={(res: { url: string }[]) => {
+										form.setValue("banner", res[0].url);
+									}}
+									onUploadError={(error: Error) => {
+										toast.error(`ERROR! ${error.message}`);
+									}}
+								/>
+							)}
+						</CardContent>
+					</Card>
+				</div>
 				<div>
 					{/* Description */}
 					<FormField
