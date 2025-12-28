@@ -199,7 +199,7 @@ export async function getAllUsers({
 	}
 }
 
-// Delet a user
+// Delete a user
 export async function deleteUser(id: string) {
 	try {
 		await prisma.user.delete({ where: { id } })
