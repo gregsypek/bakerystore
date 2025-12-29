@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-import { ShippingAddress } from "@/types";
-import { useRouter } from "next/navigation";
-import { shippingAddressSchema } from "@/lib/validators";
-import { shippingAddressDefaultValues } from "@/lib/constants";
-import { useTransition } from "react";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ControllerRenderProps, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
+import { ShippingAddress } from '@/types';
+import { useRouter } from 'next/navigation';
+import { shippingAddressSchema } from '@/lib/validators';
+import { shippingAddressDefaultValues } from '@/lib/constants';
+import { useTransition } from 'react';
 import {
 	Form,
 	FormLabel,
@@ -16,11 +16,11 @@ import {
 	FormField,
 	FormItem,
 	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader } from "lucide-react";
-import { updateUserAddress } from "@/lib/actions/user.actions";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Loader } from 'lucide-react';
+import { updateUserAddress } from '@/lib/actions/user.actions';
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 	const router = useRouter();
@@ -43,7 +43,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 				toast.error(res.message);
 				return;
 			}
-			router.push("/payment-method");
+			router.push('/payment-method');
 		});
 	};
 	return (
@@ -68,7 +68,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 								}: {
 									field: ControllerRenderProps<
 										z.infer<typeof shippingAddressSchema>,
-										"fullName"
+										'fullName'
 									>;
 								}) => (
 									<FormItem>
@@ -91,7 +91,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 								}: {
 									field: ControllerRenderProps<
 										z.infer<typeof shippingAddressSchema>,
-										"streetAddress"
+										'streetAddress'
 									>;
 								}) => (
 									<FormItem>
@@ -115,7 +115,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 								}: {
 									field: ControllerRenderProps<
 										z.infer<typeof shippingAddressSchema>,
-										"city"
+										'city'
 									>;
 								}) => (
 									<FormItem>
@@ -138,7 +138,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 								}: {
 									field: ControllerRenderProps<
 										z.infer<typeof shippingAddressSchema>,
-										"postalCode"
+										'postalCode'
 									>;
 								}) => (
 									<FormItem>
@@ -161,7 +161,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 								}: {
 									field: ControllerRenderProps<
 										z.infer<typeof shippingAddressSchema>,
-										"country"
+										'country'
 									>;
 								}) => (
 									<FormItem>
@@ -181,7 +181,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 									<Loader className="w-4 h-4 animate-spin" />
 								) : (
 									<ArrowRight className="w-4 h-4" />
-								)}{" "}
+								)}{' '}
 								Continue
 							</Button>
 						</div>

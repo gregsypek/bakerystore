@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { auth } from '@/auth';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
 	Table,
 	TableBody,
@@ -7,17 +7,17 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
-import { getOrderSummary } from "@/lib/actions/order.actions";
-import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
-import { BadgeDollarSign, Barcode, CreditCard, Users } from "lucide-react";
-import { Metadata } from "next";
-import Link from "next/link";
-import Charts from "./charts";
-import { requireAdmin } from "@/lib/auth-guard";
+} from '@/components/ui/table';
+import { getOrderSummary } from '@/lib/actions/order.actions';
+import { formatCurrency, formatDateTime, formatNumber } from '@/lib/utils';
+import { BadgeDollarSign, Barcode, CreditCard, Users } from 'lucide-react';
+import { Metadata } from 'next';
+import Link from 'next/link';
+import Charts from './charts';
+import { requireAdmin } from '@/lib/auth-guard';
 
 export const metadata: Metadata = {
-	title: "Admin Dashboard",
+	title: 'Admin Dashboard',
 };
 const AdminOverviewPage = async () => {
 	await requireAdmin();
@@ -102,7 +102,7 @@ const AdminOverviewPage = async () => {
 								{summary.latestSales.map((order) => (
 									<TableRow key={order.id}>
 										<TableCell>
-											{order?.user?.name ? order.user.name : "Deleted User"}
+											{order?.user?.name ? order.user.name : 'Deleted User'}
 										</TableCell>
 										<TableCell>
 											{formatDateTime(order.createdAt).dateOnly}

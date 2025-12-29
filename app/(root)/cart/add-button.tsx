@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { addItemToCart } from "@/lib/actions/cart.actions";
-import { CartItem } from "@/types";
-import { Loader, Plus } from "lucide-react";
-import { useTransition } from "react";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button';
+import { addItemToCart } from '@/lib/actions/cart.actions';
+import { CartItem } from '@/types';
+import { Loader, Plus } from 'lucide-react';
+import { useTransition } from 'react';
+import { toast } from 'sonner';
 
 export default function AddButton({ item }: { item: CartItem }) {
 	const [isPending, startTransition] = useTransition();

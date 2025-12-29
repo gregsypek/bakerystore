@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { APP_NAME } from "@/lib/constants";
-import Image from "next/image";
+import { Button } from '@/components/ui/button';
+import { APP_NAME } from '@/lib/constants';
+import Image from 'next/image';
 
 const NotFoundPage = () => {
 	return (
@@ -21,7 +21,7 @@ const NotFoundPage = () => {
 				<Button
 					variant="outline"
 					className="mt-4 ml-2"
-					onClick={() => (window.location.href = "/")}
+					onClick={() => (window.location.href = '/')}
 				>
 					Back To Home
 				</Button>

@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { signOutUser } from "@/lib/actions/user.actions";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useTransition } from "react";
-import { Loader } from "lucide-react";
+import { signOutUser } from '@/lib/actions/user.actions';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { useTransition } from 'react';
+import { Loader } from 'lucide-react';
 
 export function SignOutButton() {
 	const [isPending, startTransition] = useTransition(); //useTransition to React 18+ hook do obsługi asynchronicznych akcji bez blokowania UI:
 
 	const handleSignOut = () => {
 		startTransition(async () => {
-			console.log("🚀 ~ Sign out button clicked");
+			console.log('🚀 ~ Sign out button clicked');
 			await signOutUser();
 		});
 	};
@@ -28,7 +28,7 @@ export function SignOutButton() {
 					Signing out...
 				</>
 			) : (
-				"Sign Out"
+				'Sign Out'
 			)}
 		</DropdownMenuItem>
 	);

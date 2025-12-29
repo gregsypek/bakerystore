@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { productDefaultValues } from "@/lib/constants";
-import { insertProductSchema, updateProductSchema } from "@/lib/validators";
-import { Product } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { productDefaultValues } from '@/lib/constants';
+import { insertProductSchema, updateProductSchema } from '@/lib/validators';
+import { Product } from '@/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import {
 	ControllerRenderProps,
 	SubmitHandler,
 	useForm,
 	useWatch,
-} from "react-hook-form";
+} from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -18,35 +18,35 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "../ui/form";
-import z from "zod";
-import { Input } from "../ui/input";
-import slugify from "slugify";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { createProduct, updateProduct } from "@/lib/actions/product.actions";
-import { toast } from "sonner";
-import { UploadButton } from "@/lib/uploadthing";
-import Image from "next/image";
-import { Card, CardContent } from "../ui/card";
-import { Checkbox } from "../ui/checkbox";
+} from '../ui/form';
+import z from 'zod';
+import { Input } from '../ui/input';
+import slugify from 'slugify';
+import { Textarea } from '../ui/textarea';
+import { Button } from '../ui/button';
+import { createProduct, updateProduct } from '@/lib/actions/product.actions';
+import { toast } from 'sonner';
+import { UploadButton } from '@/lib/uploadthing';
+import Image from 'next/image';
+import { Card, CardContent } from '../ui/card';
+import { Checkbox } from '../ui/checkbox';
 
 const ProductForm = ({
 	type,
 	product,
 	productId,
 }: {
-	type: "Create" | "Update";
+	type: 'Create' | 'Update';
 	product?: Product;
 	productId?: string;
 }) => {
 	const router = useRouter();
-	const schema = type === "Update" ? updateProductSchema : insertProductSchema;
+	const schema = type === 'Update' ? updateProductSchema : insertProductSchema;
 
 	const form = useForm({
 		resolver: zodResolver(schema),
 		defaultValues:
-			product && type === "Update" ? product : productDefaultValues,
+			product && type === 'Update' ? product : productDefaultValues,
 	});
 
 	// NOTE: React Compiler (nowość w React 19) automatycznie memoizuje komponenty dla lepszej wydajności
@@ -56,17 +56,17 @@ const ProductForm = ({
 
 	const images = useWatch({
 		control: form.control,
-		name: "images",
-		defaultValue: form.getValues("images") || [],
+		name: 'images',
+		defaultValue: form.getValues('images') || [],
 	});
 	const isFeatured = useWatch({
 		control: form.control,
-		name: "isFeatured",
+		name: 'isFeatured',
 		defaultValue: false,
 	});
 	const banner = useWatch({
 		control: form.control,
-		name: "banner",
+		name: 'banner',
 		defaultValue: product?.banner,
 	});
 
@@ -76,20 +76,20 @@ const ProductForm = ({
 		values
 	) => {
 		// On create product
-		if (type === "Create") {
+		if (type === 'Create') {
 			const res = await createProduct(values);
 
 			if (!res.success) {
 				toast.error(res.message);
 			} else {
 				toast.success(res.message);
-				router.push("/admin/products");
+				router.push('/admin/products');
 			}
 		}
 		// On update product
-		if (type === "Update") {
+		if (type === 'Update') {
 			if (!productId) {
-				router.push("/admin/products");
+				router.push('/admin/products');
 				return;
 			}
 			const res = await updateProduct({ ...values, id: productId });
@@ -98,7 +98,7 @@ const ProductForm = ({
 				toast.error(res.message);
 			} else {
 				toast.success(res.message);
-				router.push("/admin/products");
+				router.push('/admin/products');
 			}
 		}
 	};
@@ -119,7 +119,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"name"
+								'name'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -142,7 +142,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"slug"
+								'slug'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -160,8 +160,8 @@ const ProductForm = ({
 											className="bg-gray-500 text-white px-4 py-1 mt-2 hover:bg-gray-600"
 											onClick={() => {
 												form.setValue(
-													"slug",
-													slugify(form.getValues("name"), { lower: true })
+													'slug',
+													slugify(form.getValues('name'), { lower: true })
 												);
 											}}
 										>
@@ -184,7 +184,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"category"
+								'category'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -205,7 +205,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"brand"
+								'brand'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -228,7 +228,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"price"
+								'price'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -249,7 +249,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"stock"
+								'stock'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -291,7 +291,7 @@ const ProductForm = ({
 												<UploadButton
 													endpoint="imageUploader"
 													onClientUploadComplete={(res: { url: string }[]) => {
-														form.setValue("images", [...images, res[0].url]);
+														form.setValue('images', [...images, res[0].url]);
 													}}
 													onUploadError={(error: Error) => {
 														toast.error(`ERROR! ${error.message}`);
@@ -339,7 +339,7 @@ const ProductForm = ({
 								<UploadButton
 									endpoint="imageUploader"
 									onClientUploadComplete={(res: { url: string }[]) => {
-										form.setValue("banner", res[0].url);
+										form.setValue('banner', res[0].url);
 									}}
 									onUploadError={(error: Error) => {
 										toast.error(`ERROR! ${error.message}`);
@@ -359,7 +359,7 @@ const ProductForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof insertProductSchema>,
-								"description"
+								'description'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -383,7 +383,7 @@ const ProductForm = ({
 						disabled={form.formState.isSubmitting}
 						className="button col-span-2 w-full"
 					>
-						{form.formState.isSubmitting ? "Submitting..." : `${type} Product`}
+						{form.formState.isSubmitting ? 'Submitting...' : `${type} Product`}
 					</Button>
 				</div>
 			</form>

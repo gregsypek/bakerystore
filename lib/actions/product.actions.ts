@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { prisma } from "@/db/prisma";
-import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "../constants";
+import { prisma } from '@/db/prisma';
+import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from '../constants';
 // import {  PrismaClient } from "../generated/prisma/client"
-import { convertToPlainObject, formatError } from "../utils";
-import { revalidatePath } from "next/cache";
-import z from "zod";
-import { insertProductSchema, updateProductSchema } from "../validators";
-import { Prisma } from "../generated/prisma/client";
+import { convertToPlainObject, formatError } from '../utils';
+import { revalidatePath } from 'next/cache';
+import z from 'zod';
+import { insertProductSchema, updateProductSchema } from '../validators';
+import { Prisma } from '../generated/prisma/client';
 
 // Get latest products
 export async function getLatestProducts() {
@@ -15,7 +15,7 @@ export async function getLatestProducts() {
 
 	const data = await prisma.product.findMany({
 		take: LATEST_PRODUCTS_LIMIT,
-		orderBy: { createdAt: "desc" },
+		orderBy: { createdAt: 'desc' },
 	});
 	return convertToPlainObject(data);
 }
@@ -46,50 +46,50 @@ export async function getAllProducts({
 	limit?: number;
 	page: number;
 	category?: string;
-	}) {
-	
-	//NOTE: 
+}) {
+	//NOTE:
 	// type ProductWhereInput jest AUTO-GENEROWANY przez Prisma na podstawie schema.prisma np: type ProductWhereInput = {
-  // id?: StringFilter | string
-  // name?: StringFilter | string
-  // category?: StringFilter | string
-  // price?: FloatFilter | number
-  // createdAt?: DateTimeFilter | Date
-  // AND?: ProductWhereInput[]
-  // OR?: ProductWhereInput[]
+	// id?: StringFilter | string
+	// name?: StringFilter | string
+	// category?: StringFilter | string
+	// price?: FloatFilter | number
+	// createdAt?: DateTimeFilter | Date
+	// AND?: ProductWhereInput[]
+	// OR?: ProductWhereInput[]
 	// NOT?: ProductWhereInput[]
 	// }
 
-	//NOTE: 
+	//NOTE:
 	// AND?: ProductWhereInput[]   // Tablica tych samych warunków
-  // OR?: ProductWhereInput[]    // Tablica tych samych warunków
-  // NOT?: ProductWhereInput[]   // Tablica tych samych warunków
-	// Typy są rekurencyjne - AND przyjmuje tablicę ProductWhereInput[], co oznacza, że możesz w środku AND użyć kolejnego AND, OR, NOT itd.  Pozwalają one  budować **bardzo złożone zapytania SQL** 
+	// OR?: ProductWhereInput[]    // Tablica tych samych warunków
+	// NOT?: ProductWhereInput[]   // Tablica tych samych warunków
+	// Typy są rekurencyjne - AND przyjmuje tablicę ProductWhereInput[], co oznacza, że możesz w środku AND użyć kolejnego AND, OR, NOT itd.  Pozwalają one  budować **bardzo złożone zapytania SQL**
 
-	// NOTE: 
+	// NOTE:
 	// Prisma.StringFilter czyli type StringFilter = {
-  // equals?: string              // dokładne dopasowanie
-  // contains?: string            // zawiera tekst (LIKE %text%)
-  // startsWith?: string          // zaczyna się od
-  // endsWith?: string            // kończy się na
-  // mode?: 'default' | 'insensitive'  // case sensitivity
-  // not?: StringFilter | string  // negacja
-  // in?: string[]               // wartość z listy
-  // notIn?: string[]            // wartość spoza listy
+	// equals?: string              // dokładne dopasowanie
+	// contains?: string            // zawiera tekst (LIKE %text%)
+	// startsWith?: string          // zaczyna się od
+	// endsWith?: string            // kończy się na
+	// mode?: 'default' | 'insensitive'  // case sensitivity
+	// not?: StringFilter | string  // negacja
+	// in?: string[]               // wartość z listy
+	// notIn?: string[]            // wartość spoza listy
 	// }
-		const queryFilter: Prisma.ProductWhereInput = query && query !== 'all' ? {
-
-			name: {
-				contains: query,
-				mode: 'insensitive'
-			} as Prisma.StringFilter
-	
-	} : {}
+	const queryFilter: Prisma.ProductWhereInput =
+		query && query !== 'all'
+			? {
+					name: {
+						contains: query,
+						mode: 'insensitive',
+					} as Prisma.StringFilter,
+				}
+			: {};
 	const data = await prisma.product.findMany({
 		where: {
-			...queryFilter
+			...queryFilter,
 		},
-		orderBy: { createdAt: "desc" },
+		orderBy: { createdAt: 'desc' },
 		skip: (page - 1) * limit,
 		take: limit,
 	});
@@ -109,11 +109,11 @@ export async function deleteProduct(id: string) {
 			where: { id },
 		});
 
-		if (!productExists) throw new Error("Product not found");
+		if (!productExists) throw new Error('Product not found');
 		await prisma.product.delete({ where: { id } });
 
-		revalidatePath("/admin/products");
-		return { success: true, message: "Product deleted successfully" };
+		revalidatePath('/admin/products');
+		return { success: true, message: 'Product deleted successfully' };
 	} catch (error) {
 		return { success: false, message: formatError(error) };
 	}
@@ -125,8 +125,8 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
 		const product = insertProductSchema.parse(data);
 		await prisma.product.create({ data: product });
 
-		revalidatePath("/admin/products");
-		return { success: true, message: "Product created successfully" };
+		revalidatePath('/admin/products');
+		return { success: true, message: 'Product created successfully' };
 	} catch (error) {
 		return { success: false, message: formatError(error) };
 	}
@@ -139,15 +139,15 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
 		const productExists = await prisma.product.findFirst({
 			where: { id: product.id },
 		});
-		if (!productExists) throw new Error("Product not found");
+		if (!productExists) throw new Error('Product not found');
 
 		await prisma.product.update({
 			where: { id: product.id },
 			data: product,
 		});
 
-		revalidatePath("/admin/products");
-		return { success: true, message: "Product updated successfully" };
+		revalidatePath('/admin/products');
+		return { success: true, message: 'Product updated successfully' };
 	} catch (error) {
 		return { success: false, message: formatError(error) };
 	}

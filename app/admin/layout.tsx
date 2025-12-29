@@ -1,12 +1,12 @@
-import Footer from "@/components/footer";
-import Header from "@/components/shared/header";
-import Menu from "@/components/shared/header/menu";
-import { APP_NAME } from "@/lib/constants";
-import Image from "next/image";
-import Link from "next/link";
-import MainNav from "./main-nav";
-import { Input } from "@/components/ui/input";
-import AdminSearch from "@/components/admin/admin-search";
+import Footer from '@/components/footer';
+import Header from '@/components/shared/header';
+import Menu from '@/components/shared/header/menu';
+import { APP_NAME } from '@/lib/constants';
+import Image from 'next/image';
+import Link from 'next/link';
+import MainNav from './main-nav';
+import { Input } from '@/components/ui/input';
+import AdminSearch from '@/components/admin/admin-search';
 
 export default function AdminLayout({
 	children,

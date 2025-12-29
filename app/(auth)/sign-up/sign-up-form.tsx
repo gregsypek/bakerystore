@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signUpUser } from "@/lib/actions/user.actions";
-import { signUpDefaultValues } from "@/lib/constants";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useActionState } from "react";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { signUpUser } from '@/lib/actions/user.actions';
+import { signUpDefaultValues } from '@/lib/constants';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useActionState } from 'react';
 
 const SignUpForm = () => {
 	const [data, action, isPending] = useActionState(signUpUser, {
 		success: false,
-		message: "",
+		message: '',
 	});
 
 	const searchParams = useSearchParams();
-	const callbackUrl = searchParams.get("callbackUrl") || "/";
+	const callbackUrl = searchParams.get('callbackUrl') || '/';
 	return (
 		<form action={action}>
 			<input type="hidden" name="callbackUrl" value={callbackUrl} />
@@ -67,14 +67,14 @@ const SignUpForm = () => {
 				</div>
 				<div>
 					<Button className="w-full" variant="default" disabled={isPending}>
-						{isPending ? "Submitting..." : "Sign Up"}
+						{isPending ? 'Submitting...' : 'Sign Up'}
 					</Button>
 				</div>
 				{data && !data.success && (
 					<div className="text-center text-destructive">{data.message}</div>
 				)}
 				<div className="text-sm text-center text-muted-foreground">
-					Already have an account?{" "}
+					Already have an account?{' '}
 					<Link href="/sign-in" target="_self" className="link">
 						Sign In
 					</Link>

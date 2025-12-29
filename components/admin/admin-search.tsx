@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from 'next/navigation';
 // import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
+import { Input } from '../ui/input';
 
 const AdminSearch = () => {
 	const pathname = usePathname();
-	const formActionUrl = pathname.includes("/admin/orders")
-		? "/admin/orders"
-		: pathname.includes("/admin/users")
-			? "/admin/users"
-			: "/admin/products";
+	const formActionUrl = pathname.includes('/admin/orders')
+		? '/admin/orders'
+		: pathname.includes('/admin/users')
+			? '/admin/users'
+			: '/admin/products';
 
 	const searchParams = useSearchParams();
 	// Derive the value directly from searchParams - no state needed!
-	const queryValue = searchParams.get("query") || "";
+	const queryValue = searchParams.get('query') || '';
 
 	//NOTE: BAD APPROACH (COMMENTED) - creates unnecessary re-renders (cascading renders) since searchParams changes trigger the effect, which then triggers a state update.
 	// const [queryValue, setQueryValue] = useState(searchParams.get("query") || "");

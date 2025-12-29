@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import {
 	Table,
 	TableBody,
@@ -9,27 +9,27 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
-import { paypal } from "@/lib/paypal";
-import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
-import { Order } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
+} from '@/components/ui/table';
+import { paypal } from '@/lib/paypal';
+import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
+import { Order } from '@/types';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import {
 	PayPalButtons,
 	PayPalScriptProvider,
 	usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
-import { toast } from "sonner";
+} from '@paypal/react-paypal-js';
+import { toast } from 'sonner';
 import {
 	approvePayPalOrder,
 	createPayPalOrder,
 	deliveredOrder,
 	updateOrderToPaidCOD,
-} from "@/lib/actions/order.actions";
-import { useTransition } from "react";
-import { Button } from "@/components/ui/button";
+} from '@/lib/actions/order.actions';
+import { useTransition } from 'react';
+import { Button } from '@/components/ui/button';
 
 const OrderDetailsTable = ({
 	order,
@@ -57,12 +57,12 @@ const OrderDetailsTable = ({
 
 	const PrintLoadingState = () => {
 		const [{ isPending, isRejected }] = usePayPalScriptReducer();
-		let status = "";
+		let status = '';
 
 		if (isPending) {
-			status = "Loading PayPal...";
+			status = 'Loading PayPal...';
 		} else if (isRejected) {
-			status = "Error Loading PayPal";
+			status = 'Error Loading PayPal';
 		}
 		return status;
 	};
@@ -79,7 +79,7 @@ const OrderDetailsTable = ({
 	const handleApprovePayPalOrder = async (data: { orderID: string }) => {
 		const res = await approvePayPalOrder(order.id, data);
 		const { success, message } = res;
-		toast[success ? "success" : "error"](message);
+		toast[success ? 'success' : 'error'](message);
 	};
 
 	// Button to mark order as paid
@@ -92,11 +92,11 @@ const OrderDetailsTable = ({
 				onClick={() =>
 					startTransition(async () => {
 						const res = await updateOrderToPaidCOD(order.id);
-						toast[res?.success ? "success" : "error"](res?.message);
+						toast[res?.success ? 'success' : 'error'](res?.message);
 					})
 				}
 			>
-				{isPending ? "Marking as Paid..." : "Mark as Paid"}
+				{isPending ? 'Marking as Paid...' : 'Mark as Paid'}
 			</Button>
 		);
 	};
@@ -109,11 +109,11 @@ const OrderDetailsTable = ({
 				onClick={() =>
 					startTransition(async () => {
 						const res = await deliveredOrder(order.id);
-						toast[res?.success ? "success" : "error"](res?.message);
+						toast[res?.success ? 'success' : 'error'](res?.message);
 					})
 				}
 			>
-				{isPending ? "Marking as Delivered..." : "Mark as Delivered"}
+				{isPending ? 'Marking as Delivered...' : 'Mark as Delivered'}
 			</Button>
 		);
 	};
@@ -213,7 +213,7 @@ const OrderDetailsTable = ({
 								<div>{formatCurrency(totalPrice)}</div>
 							</div>
 							{/* PayPal Payment */}
-							{!isPaid && paymentMethod === "PayPal" && (
+							{!isPaid && paymentMethod === 'PayPal' && (
 								<div>
 									<PayPalScriptProvider options={{ clientId: paypalClientId }}>
 										<PrintLoadingState />
@@ -226,7 +226,7 @@ const OrderDetailsTable = ({
 							)}
 							{/* Cash on Delivery */}
 
-							{isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
+							{isAdmin && !isPaid && paymentMethod === 'CashOnDelivery' && (
 								<MarkAsPaidButton />
 							)}
 							{isAdmin && isPaid && !isDelivered && <MarkAsDeliveredButton />}

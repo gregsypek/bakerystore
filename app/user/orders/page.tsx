@@ -1,4 +1,4 @@
-import Pagination from "@/components/shared/pagination";
+import Pagination from '@/components/shared/pagination';
 import {
 	Table,
 	TableBody,
@@ -6,14 +6,14 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
-import { getMyOrders } from "@/lib/actions/order.actions";
-import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
-import { Metadata } from "next";
-import Link from "next/link";
+} from '@/components/ui/table';
+import { getMyOrders } from '@/lib/actions/order.actions';
+import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
+import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: "My Orders",
+	title: 'My Orders',
 };
 const OrdersPage = async (props: {
 	searchParams: Promise<{ page: string }>;
@@ -48,12 +48,12 @@ const OrdersPage = async (props: {
 								<TableCell>
 									{order.isPaid && order.paidAt
 										? formatDateTime(order.paidAt).dateTime
-										: "Not Paid"}
+										: 'Not Paid'}
 								</TableCell>
 								<TableCell>
 									{order.isDelivered && order.deliveredAt
 										? formatDateTime(order.deliveredAt).dateTime
-										: "Not Delivered"}
+										: 'Not Delivered'}
 								</TableCell>
 								<TableCell>
 									<Link href={`/order/${order.id}`}>

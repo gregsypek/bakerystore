@@ -1,4 +1,4 @@
-import { Prisma } from "../generated/prisma/client";
+import { Prisma } from '../generated/prisma/client';
 
 import { prisma } from '@/db/prisma';
 
@@ -34,7 +34,7 @@ export async function getAllProducts({
 	// Pobierz przefiltrowane produkty
 	const data = await prisma.product.findMany({
 		where: whereClause,
-		orderBy: { createdAt: "desc" },
+		orderBy: { createdAt: 'desc' },
 		skip: (page - 1) * limit,
 		take: limit,
 	});
@@ -86,16 +86,14 @@ export async function getAllProductsV2({
 	}
 
 	// Połączenie wszystkich filtrów (AND logic)
-	const whereClause: Prisma.ProductWhereInput = 
-		filters.length > 0 
-			? { AND: filters } 
-			: {};
+	const whereClause: Prisma.ProductWhereInput =
+		filters.length > 0 ? { AND: filters } : {};
 
 	// Wykonaj zapytania równolegle dla lepszej wydajności
 	const [data, dataCount] = await Promise.all([
 		prisma.product.findMany({
 			where: whereClause,
-			orderBy: { createdAt: "desc" },
+			orderBy: { createdAt: 'desc' },
 			skip: (page - 1) * limit,
 			take: limit,
 		}),

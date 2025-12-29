@@ -1,10 +1,10 @@
-import { getUserById } from "@/lib/actions/user.actions";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import UpdateUserForm from "./update-user-form";
+import { getUserById } from '@/lib/actions/user.actions';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import UpdateUserForm from './update-user-form';
 
 export const metadata: Metadata = {
-	title: "Update User",
+	title: 'Update User',
 };
 
 const AdminUserUpdatePage = async (props: {

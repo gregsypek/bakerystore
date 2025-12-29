@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { createOrder } from "@/lib/actions/order.actions";
-import { Check, Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useFormStatus } from "react-dom";
+import { Button } from '@/components/ui/button';
+import { createOrder } from '@/lib/actions/order.actions';
+import { Check, Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useFormStatus } from 'react-dom';
 
 const PlaceOrderForm = () => {
 	const router = useRouter();
@@ -25,14 +25,14 @@ const PlaceOrderForm = () => {
 					<Loader className="w-4 h-4 animate-spin" />
 				) : (
 					<Check className="w-4 h-4" />
-				)}{" "}
+				)}{' '}
 				Place Order
 			</Button>
 		);
 	};
 	return (
 		<form onSubmit={handleSubmit} className="w-full">
-			<PlaceOrderButton />{" "}
+			<PlaceOrderButton />{' '}
 		</form>
 	);
 };

@@ -1,11 +1,11 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export async function requireAdmin() {
-  const session = await auth();
+	const session = await auth();
 
-  if (session?.user?.role !== "admin") {
-    redirect('/unauthorized')
-  }
-  return session 
+	if (session?.user?.role !== 'admin') {
+		redirect('/unauthorized');
+	}
+	return session;
 }

@@ -1,6 +1,6 @@
-import DeleteDialog from "@/components/shared/delete-dialog";
-import Pagination from "@/components/shared/pagination";
-import { Button } from "@/components/ui/button";
+import DeleteDialog from '@/components/shared/delete-dialog';
+import Pagination from '@/components/shared/pagination';
+import { Button } from '@/components/ui/button';
 import {
 	Table,
 	TableBody,
@@ -8,10 +8,10 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
-import { deleteProduct, getAllProducts } from "@/lib/actions/product.actions";
-import { formatCurrency, formatId } from "@/lib/utils";
-import Link from "next/link";
+} from '@/components/ui/table';
+import { deleteProduct, getAllProducts } from '@/lib/actions/product.actions';
+import { formatCurrency, formatId } from '@/lib/utils';
+import Link from 'next/link';
 
 const AdminProductPage = async (props: {
 	searchParams: Promise<{
@@ -23,8 +23,8 @@ const AdminProductPage = async (props: {
 	const searchParams = await props.searchParams;
 
 	const page = Number(searchParams.page) || 1;
-	const searchText = searchParams.query || "";
-	const category = searchParams.category || "";
+	const searchText = searchParams.query || '';
+	const category = searchParams.category || '';
 
 	const products = await getAllProducts({
 		query: searchText,
@@ -40,8 +40,8 @@ const AdminProductPage = async (props: {
 					{searchText && (
 						<div>
 							Filtered by <i>&quot;{searchText}&quot;</i>
-							<Link href='/admin/products'>
-								<Button variant='outline' size='sm'>
+							<Link href="/admin/products">
+								<Button variant="outline" size="sm">
 									Remove Filter
 								</Button>
 							</Link>

@@ -1,15 +1,15 @@
-import Link from "next/link";
-import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { auth } from '@/auth';
+import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { UserIcon } from "lucide-react";
-import { SignOutButton } from "./sign-out-button";
+} from '@/components/ui/dropdown-menu';
+import { UserIcon } from 'lucide-react';
+import { SignOutButton } from './sign-out-button';
 
 const UserButton = async () => {
 	const session = await auth();
@@ -24,7 +24,7 @@ const UserButton = async () => {
 		);
 	}
 
-	const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U";
+	const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? 'U';
 
 	return (
 		<div className="flex gap-2 items-center">
@@ -61,7 +61,7 @@ const UserButton = async () => {
 						</Link>
 					</DropdownMenuItem>
 
-					{session?.user?.role === "admin" && (
+					{session?.user?.role === 'admin' && (
 						<DropdownMenuItem>
 							<Link href="/admin/overview" className="w-full">
 								Admin

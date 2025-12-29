@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
 	Form,
 	FormControl,
@@ -8,18 +8,18 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { updateUserPaymentMethod } from "@/lib/actions/user.actions";
-import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
-import { paymentMethodSchema } from "@/lib/validators";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { updateUserPaymentMethod } from '@/lib/actions/user.actions';
+import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from '@/lib/constants';
+import { paymentMethodSchema } from '@/lib/validators';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowRight, Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const PaymentMethodForm = ({
 	preferredPaymentMethod,
@@ -39,12 +39,12 @@ const PaymentMethodForm = ({
 	const onSubmit = async (values: z.infer<typeof paymentMethodSchema>) => {
 		startTransition(async () => {
 			const res = await updateUserPaymentMethod(values);
-			console.log("Selected payment method:", values);
+			console.log('Selected payment method:', values);
 			if (!res.success) {
 				toast.error(res.message);
 				return;
 			}
-			router.push("/place-order");
+			router.push('/place-order');
 		});
 	};
 

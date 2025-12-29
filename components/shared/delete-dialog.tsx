@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
+import { useState, useTransition } from 'react';
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -10,9 +10,9 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import { Button } from "../ui/button";
-import { toast } from "sonner";
+} from '../ui/alert-dialog';
+import { Button } from '../ui/button';
+import { toast } from 'sonner';
 
 const DeleteDialog = ({
 	id,
@@ -59,7 +59,7 @@ const DeleteDialog = ({
 						disabled={isPending}
 						onClick={handleDeleteClick}
 					>
-						{isPending ? "Deleting..." : "Delete"}
+						{isPending ? 'Deleting...' : 'Delete'}
 					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>

@@ -4,25 +4,27 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { APP_NAME } from "@/lib/constants";
-import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import CredentialsSignInForm from "./credentials-signin-form";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+} from '@/components/ui/card';
+import { APP_NAME } from '@/lib/constants';
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import CredentialsSignInForm from './credentials-signin-form';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-	title: "Sign In",
+	title: 'Sign In',
 };
 
-const SignInPage = async (props: {searchParams: Promise<{callbackUrl:string}>}) => {
+const SignInPage = async (props: {
+	searchParams: Promise<{ callbackUrl: string }>;
+}) => {
 	// callbackUrl to parametr przekierowania - zapamiętuje gdzie użytkownik chciał być przed logowaniem i wraca go tam po logowaniu.
-	const {callbackUrl} = await props.searchParams;
+	const { callbackUrl } = await props.searchParams;
 	const session = await auth();
 
-	if(session) {
+	if (session) {
 		return redirect(callbackUrl || '/');
 	}
 	return (

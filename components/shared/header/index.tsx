@@ -1,7 +1,7 @@
-import { APP_NAME } from "@/lib/constants";
-import Image from "next/image";
-import Link from "next/link";
-import Menu from "./menu";
+import { APP_NAME } from '@/lib/constants';
+import Image from 'next/image';
+import Link from 'next/link';
+import Menu from './menu';
 
 const Header = () => {
 	return (
@@ -16,7 +16,7 @@ const Header = () => {
 							height={48}
 							width={48}
 							priority={true}
-							style={{ width: "auto", height: "48px" }}
+							style={{ width: 'auto', height: '48px' }}
 						/>
 						<span className="hidden lg:block font-bold text-2xl ml-3">
 							{APP_NAME}

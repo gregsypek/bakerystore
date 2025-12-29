@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "../ui/button";
-import { formUrlQuery } from "@/lib/utils";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '../ui/button';
+import { formUrlQuery } from '@/lib/utils';
 
 type PaginationProps = {
 	page: number | string;
@@ -15,18 +15,17 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
 	const searchParams = useSearchParams();
 
 	const handleClick = (btnType: string) => {
-		const pageValue = btnType === "next" ? Number(page) + 1 : Number(page) - 1;
+		const pageValue = btnType === 'next' ? Number(page) + 1 : Number(page) - 1;
 		// console.log("🚀 ~ handleClick ~ pageValue:", pageValue)
 
 		const newUrl = formUrlQuery({
 			params: searchParams.toString(),
-			key: urlParamName || "page",
+			key: urlParamName || 'page',
 			value: pageValue.toString(),
 		});
 		// console.log("🚀 ~ handleClick ~ newUrl:", newUrl)
 
-    router.push(newUrl)
-
+		router.push(newUrl);
 	};
 	return (
 		<div className="flex gap-2">
@@ -35,7 +34,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
 				variant="outline"
 				className="w-28"
 				disabled={Number(page) <= 1}
-				onClick={() => handleClick("prev")}
+				onClick={() => handleClick('prev')}
 			>
 				Previous
 			</Button>
@@ -44,7 +43,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
 				variant="outline"
 				className="w-28"
 				disabled={Number(page) >= totalPages}
-				onClick={() => handleClick("next")}
+				onClick={() => handleClick('next')}
 			>
 				Next
 			</Button>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
 	Table,
@@ -7,19 +7,19 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
-import { Cart } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
+} from '@/components/ui/table';
+import { Cart } from '@/types';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import React, { useTransition } from "react";
-import AddButton from "./add-button";
-import RemoveButton from "./remove-button";
-import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { ArrowRight, Loader } from "lucide-react";
+import React, { useTransition } from 'react';
+import AddButton from './add-button';
+import RemoveButton from './remove-button';
+import { Card, CardContent } from '@/components/ui/card';
+import { formatCurrency } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { ArrowRight, Loader } from 'lucide-react';
 
 export default function CartTable({ cart }: { cart?: Cart }) {
 	const router = useRouter();
@@ -74,7 +74,7 @@ export default function CartTable({ cart }: { cart?: Cart }) {
 						<CardContent className="p-4 gap-4">
 							<div className="pb-3 text-xl">
 								Subtotal({cart.items.reduce((a, c) => a + c.qty, 0)}
-								{""})
+								{''})
 								<span className="font-bold">
 									{formatCurrency(cart.itemsPrice)}
 								</span>
@@ -83,14 +83,14 @@ export default function CartTable({ cart }: { cart?: Cart }) {
 								className="w-full"
 								disabled={isPending}
 								onClick={() =>
-									startTransition(() => router.push("/shipping-address"))
+									startTransition(() => router.push('/shipping-address'))
 								}
 							>
 								{isPending ? (
 									<Loader className="w-4 h-4 animate-spin" />
 								) : (
 									<ArrowRight className="w-4" />
-								)}{" "}
+								)}{' '}
 								Procceed to Checkout
 							</Button>
 						</CardContent>

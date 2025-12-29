@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
 	Form,
 	FormControl,
@@ -8,23 +8,23 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
-import { updateUser } from "@/lib/actions/user.actions";
-import { USER_ROLES } from "@/lib/constants";
-import { updateUserSchema } from "@/lib/validators";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { ControllerRenderProps, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import z from "zod";
+} from '@/components/ui/select';
+import { updateUser } from '@/lib/actions/user.actions';
+import { USER_ROLES } from '@/lib/constants';
+import { updateUserSchema } from '@/lib/validators';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { ControllerRenderProps, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import z from 'zod';
 
 const UpdateUserForm = ({
 	user,
@@ -50,7 +50,7 @@ const UpdateUserForm = ({
 
 			toast.success(res.message);
 			form.reset();
-			router.push("/admin/users");
+			router.push('/admin/users');
 		} catch (error) {
 			toast.error((error as Error).message);
 		}
@@ -69,7 +69,7 @@ const UpdateUserForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof updateUserSchema>,
-								"email"
+								'email'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -96,7 +96,7 @@ const UpdateUserForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof updateUserSchema>,
-								"name"
+								'name'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -119,7 +119,7 @@ const UpdateUserForm = ({
 						}: {
 							field: ControllerRenderProps<
 								z.infer<typeof updateUserSchema>,
-								"role"
+								'role'
 							>;
 						}) => (
 							<FormItem className="w-full">
@@ -152,7 +152,7 @@ const UpdateUserForm = ({
 						className="w-full"
 						disabled={form.formState.isSubmitting}
 					>
-						{form.formState.isSubmitting ? "Submitting..." : "Update User"}
+						{form.formState.isSubmitting ? 'Submitting...' : 'Update User'}
 					</Button>
 				</div>
 			</form>
