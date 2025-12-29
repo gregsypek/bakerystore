@@ -47,6 +47,36 @@ export async function getAllProducts({
 	page: number;
 	category?: string;
 	}) {
+	
+	//NOTE: 
+	// type ProductWhereInput jest AUTO-GENEROWANY przez Prisma na podstawie schema.prisma np: type ProductWhereInput = {
+  // id?: StringFilter | string
+  // name?: StringFilter | string
+  // category?: StringFilter | string
+  // price?: FloatFilter | number
+  // createdAt?: DateTimeFilter | Date
+  // AND?: ProductWhereInput[]
+  // OR?: ProductWhereInput[]
+	// NOT?: ProductWhereInput[]
+	// }
+
+	//NOTE: 
+	// AND?: ProductWhereInput[]   // Tablica tych samych warunków
+  // OR?: ProductWhereInput[]    // Tablica tych samych warunków
+  // NOT?: ProductWhereInput[]   // Tablica tych samych warunków
+	// Typy są rekurencyjne - AND przyjmuje tablicę ProductWhereInput[], co oznacza, że możesz w środku AND użyć kolejnego AND, OR, NOT itd.  Pozwalają one  budować **bardzo złożone zapytania SQL** 
+
+	// NOTE: 
+	// Prisma.StringFilter czyli type StringFilter = {
+  // equals?: string              // dokładne dopasowanie
+  // contains?: string            // zawiera tekst (LIKE %text%)
+  // startsWith?: string          // zaczyna się od
+  // endsWith?: string            // kończy się na
+  // mode?: 'default' | 'insensitive'  // case sensitivity
+  // not?: StringFilter | string  // negacja
+  // in?: string[]               // wartość z listy
+  // notIn?: string[]            // wartość spoza listy
+	// }
 		const queryFilter: Prisma.ProductWhereInput = query && query !== 'all' ? {
 
 			name: {
@@ -68,7 +98,7 @@ export async function getAllProducts({
 
 	return {
 		data,
-		totalPages: Math.ceil(dataCount / limit),
+		totalPages: Math.ceil(dataCount / limit), //TODO: TOTAL PAGES DOESN'T INCLUDE FILTERS - FIX LATER!
 	};
 }
 
