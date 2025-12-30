@@ -157,19 +157,32 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
 export async function getAllCategories() {
 	const data = await prisma.product.groupBy({
 		by: ['category'],
-		_count: true,
+		_count: {
+			category: true,
+		},
 	});
-	return data;
+	// NOTE:
+	// data zwraca:
+	// [
+	// 	{ category: 'electronics', _count: Prisma.DecimalJsLike }, // ❌ NIE serializowalne
+	// 	{ category: 'books', _count: Prisma.DecimalJsLike },
+	// ];
+	// NOTE:
+	// Prisma.DecimalJsLike? To obiekt klasy (nie prymityw), który reprezentuje liczby dziesiętne z dużą precyzją. Prisma używa biblioteki decimal.js pod spodem.
+
+	// ✅ Konwersja na serializowalny format
+	return data.map((item) => ({
+		category: item.category,
+		count: item._count.category,
+	}));
 }
 
 // Get featured products
-
 export async function getFeaturedProducts() {
 	const data = await prisma.product.findMany({
 		where: { isFeatured: true },
 		orderBy: { createdAt: 'desc' },
 		take: 4,
 	});
-	console.log('🚀 ~ getFeaturedProducts ~ data:', data);
 	return convertToPlainObject(data);
 }
