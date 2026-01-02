@@ -13,7 +13,7 @@ const currency = z
 		(value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))),
 		'Price must be a valid number with up to 2 decimal places'
 	);
-
+// NOTE: z.coerce lub z.transform w Zod zmienia typ między wejściem a wyjściem. Niezgodnos typów między schemaZod a defaultValues TypeScript widzi różnicę między z.input (przed transformacją) a z.output (po transformacji)
 // Schema for inserting products
 export const insertProductSchema = z.object({
 	name: z.string().min(3, 'Product name must be at least 3 characters long'),
@@ -23,7 +23,7 @@ export const insertProductSchema = z.object({
 	description: z
 		.string()
 		.min(10, 'Description must be at least 10 characters long'),
-	stock: z.coerce.number().int().min(0, 'Stock cannot be negative'),
+	stock: z.number().int().min(0, 'Stock cannot be negative'),
 	images: z.array(z.string()).min(1, 'At least one image is required'),
 	isFeatured: z.boolean().optional().default(false),
 	banner: z.string().optional().nullable(),
@@ -145,4 +145,17 @@ export const updateProfileSchema = z.object({
 export const updateUserSchema = updateProfileSchema.extend({
 	id: z.string().min(1, 'ID is required'),
 	role: z.string().min(1, 'Role is required'),
+});
+
+// Schema to insert reviews
+export const insertReviewSchema = z.object({
+	title: z.string().min(3, 'Title must be at least 3 characters'),
+	description: z.string().min(3, 'Description must be at least 3 characters'),
+	productId: z.string().min(1, 'Product is required'),
+	userId: z.string().min(1, 'User is required'),
+	rating: z.coerce
+		.number()
+		.int()
+		.min(1, 'Rating must be at least 1')
+		.max(5, 'Rating must be at most 5'),
 });
