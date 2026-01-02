@@ -15,7 +15,7 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
 	const handleAddToCart = async () => {
 		startTransition(async () => {
 			const res = await addItemToCart(item);
-			console.log('🚀 ~ handleAddToCart ~ res:', res.message);
+			// console.log('🚀 ~ handleAddToCart ~ res:', res.message);
 
 			if (!res.success) {
 				toast.error(res.message, {

@@ -12,7 +12,7 @@ import { SearchIcon } from 'lucide-react';
 
 const Search = async () => {
 	const categories = await getAllCategories();
-	console.log('🚀 ~ Search ~ categories:', categories);
+	// console.log('🚀 ~ Search ~ categories:', categories);
 	return (
 		<form action="/search" method="GET">
 			<div className="flex w-full max-w-sm items-center space-x-2">
