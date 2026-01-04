@@ -155,7 +155,7 @@ model Review {
   userId             String   @db.Uuid
   productId          String   @db.Uuid
   rating             Int // 1-5 gwiazdek
-  title              String? // Opcjonalny tytuł
+  title              String   @default("Review")
   description        String
   isVerifiedPurchase Boolean  @default(false)
   createdAt          DateTime @default(now()) @db.Timestamp(6)
