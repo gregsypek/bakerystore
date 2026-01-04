@@ -30,20 +30,23 @@ import {
 } from '@/lib/actions/order.actions';
 import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
+import StripePayment from './stripe-payment';
 
 const OrderDetailsTable = ({
 	order,
 	paypalClientId,
 	isAdmin,
+	stripeClientSecret,
 }: {
 	order: Order;
 	paypalClientId: string;
 	isAdmin: boolean;
+	stripeClientSecret: string | null;
 }) => {
 	const {
 		id,
 		shippingAddress,
-		orderitems,
+		orderItems,
 		itemsPrice,
 		shippingPrice,
 		taxPrice,
@@ -164,7 +167,7 @@ const OrderDetailsTable = ({
 									</TableRow>
 								</TableHeader>
 								<TableBody>
-									{orderitems.map((item) => (
+									{orderItems.map((item) => (
 										<TableRow key={item.slug}>
 											<TableCell>
 												<Link
@@ -224,8 +227,16 @@ const OrderDetailsTable = ({
 									</PayPalScriptProvider>
 								</div>
 							)}
-							{/* Cash on Delivery */}
+							{/* Stripe Payment */}
+							{!isPaid && paymentMethod === 'Stripe' && stripeClientSecret && (
+								<StripePayment
+									priceInCents={Number(order.totalPrice) * 100}
+									orderId={order.id}
+									clientSecret={stripeClientSecret}
+								/>
+							)}
 
+							{/* Cash on Delivery */}
 							{isAdmin && !isPaid && paymentMethod === 'CashOnDelivery' && (
 								<MarkAsPaidButton />
 							)}

@@ -101,7 +101,7 @@ export async function getOrderById(orderId: string) {
 			id: orderId,
 		},
 		include: {
-			orderitems: true,
+			orderItems: true,
 			user: { select: { name: true, email: true } },
 		},
 	});
@@ -208,7 +208,7 @@ async function updateOrderToPaid({
 			id: orderId,
 		},
 		include: {
-			orderitems: true,
+			orderItems: true,
 		},
 	});
 
@@ -218,7 +218,7 @@ async function updateOrderToPaid({
 	// Transaction to update the order and update the product quantities
 	await prisma.$transaction(async (tx) => {
 		// Update all item quantities in the database
-		for (const item of order.orderitems) {
+		for (const item of order.orderItems) {
 			await tx.product.update({
 				where: { id: item.productId },
 				data: { stock: { increment: -item.qty } },
@@ -242,7 +242,7 @@ async function updateOrderToPaid({
 			id: orderId,
 		},
 		include: {
-			orderitems: true,
+			orderItems: true,
 			user: { select: { name: true, email: true } },
 		},
 	});
