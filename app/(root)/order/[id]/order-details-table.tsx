@@ -10,7 +10,6 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { paypal } from '@/lib/paypal';
 import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
 import { Order } from '@/types';
 import Image from 'next/image';
@@ -44,7 +43,6 @@ const OrderDetailsTable = ({
 	stripeClientSecret: string | null;
 }) => {
 	const {
-		id,
 		shippingAddress,
 		orderItems,
 		itemsPrice,
