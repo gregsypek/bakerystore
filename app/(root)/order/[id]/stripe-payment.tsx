@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { SERVER_URL } from '@/lib/constants';
-import { formatCurrency } from '@/lib/utils';
+import { FormEvent, useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
 import {
 	Elements,
 	LinkAuthenticationElement,
@@ -8,9 +7,10 @@ import {
 	useElements,
 	useStripe,
 } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js/pure';
 import { useTheme } from 'next-themes';
-import { FormEvent, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { formatCurrency } from '@/lib/utils';
+import { SERVER_URL } from '@/lib/constants';
 
 const StripePayment = ({
 	priceInCents,
@@ -24,6 +24,7 @@ const StripePayment = ({
 	const stripePromise = loadStripe(
 		process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 	);
+
 	const { theme, systemTheme } = useTheme();
 
 	// Stripe Form Component
@@ -32,14 +33,16 @@ const StripePayment = ({
 		const elements = useElements();
 
 		const [isLoading, setIsLoading] = useState(false);
-		const [errorMessage, setErrorMessage] = useState<string>();
-		const [email, setEmail] = useState<string>();
+		const [errorMessage, setErrorMessage] = useState('');
+		const [email, setEmail] = useState('');
 
-		// Handle StripeForm submission
-		async function handleSubmit(e: FormEvent) {
+		const handleSubmit = async (e: FormEvent) => {
 			e.preventDefault();
+
 			if (stripe == null || elements == null || email == null) return;
+
 			setIsLoading(true);
+
 			stripe
 				.confirmPayment({
 					elements,
@@ -49,20 +52,19 @@ const StripePayment = ({
 				})
 				.then(({ error }) => {
 					if (
-						error.type === 'card_error' ||
-						error.type === 'validation_error'
+						error?.type === 'card_error' ||
+						error?.type === 'validation_error'
 					) {
-						setErrorMessage(error.message);
-					} else {
+						setErrorMessage(error?.message ?? 'An unknown error occurred');
+					} else if (error) {
 						setErrorMessage('An unknown error occurred');
 					}
 				})
 				.finally(() => setIsLoading(false));
-		}
-
+		};
 		// return for StripeForm
 		return (
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form className="space-y-4" onSubmit={handleSubmit}>
 				<div className="text-xl">Stripe Checkout</div>
 				{errorMessage && <div className="text-destructive">{errorMessage}</div>}
 				<PaymentElement />
@@ -78,26 +80,19 @@ const StripePayment = ({
 				>
 					{isLoading
 						? 'Purchasing...'
-						: `Purchase - ${formatCurrency(priceInCents / 100)}`}
+						: `Purchase ${formatCurrency(priceInCents / 100)}`}
 				</Button>
 			</form>
 		);
 	};
-
 	// Return for StripePayment
+
 	return (
 		<Elements
 			options={{
 				clientSecret,
 				appearance: {
-					theme:
-						theme === 'dark'
-							? 'night'
-							: theme === 'light'
-								? 'stripe'
-								: systemTheme === 'light'
-									? 'stripe'
-									: 'night',
+					theme: theme === 'dark' ? 'night' : 'stripe',
 				},
 			}}
 			stripe={stripePromise}
