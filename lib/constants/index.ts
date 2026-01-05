@@ -57,7 +57,9 @@ export const USER_ROLES = process.env.USER_ROLES
 	: ['admin', 'user'];
 
 export const reviewFormDefaultValues = {
-	title: '',
+	title: 'Review',
 	comment: '',
 	rating: 0,
+	productId: '',
+	userId: '',
 };

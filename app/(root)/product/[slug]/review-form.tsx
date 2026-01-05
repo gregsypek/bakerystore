@@ -126,8 +126,8 @@ const ReviewForm = ({
 									<FormItem>
 										<FormLabel>Rating</FormLabel>
 										<Select
-											onValueChange={field.onChange}
-											value={field.value.toString()}
+											onValueChange={(value) => field.onChange(Number(value))}
+											value={field.value?.toString() || ''}
 										>
 											<FormControl>
 												<SelectTrigger>
