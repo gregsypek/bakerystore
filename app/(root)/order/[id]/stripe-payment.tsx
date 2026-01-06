@@ -1,5 +1,8 @@
 import { FormEvent, useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
+import {
+	loadStripe,
+	StripeLinkAuthenticationElementChangeEvent,
+} from '@stripe/stripe-js';
 import {
 	Elements,
 	LinkAuthenticationElement,
@@ -70,7 +73,9 @@ const StripePayment = ({
 				<PaymentElement />
 				<div>
 					<LinkAuthenticationElement
-						onChange={(e) => setEmail(e.value.email)}
+						onChange={(e: StripeLinkAuthenticationElementChangeEvent) =>
+							setEmail(e.value.email)
+						}
 					/>
 				</div>
 				<Button

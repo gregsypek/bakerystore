@@ -39,18 +39,16 @@ export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
 export const CAROUSEL_SLIDE_TIME = 10000;
 
 export const productDefaultValues = {
-	name: 'Zosia',
-	slug: 'zosia',
-	category: 'sweets',
-	images: [],
-	brand: 'Plurabis',
-	description: 'Zosia is sweet',
+	name: '',
+	slug: '',
+	category: '',
+	brand: '',
 	price: '0',
 	stock: 0,
-	// rating:'0',
-	// numReviews:'0',
+	images: [],
 	isFeatured: false,
-	banner: null,
+	banner: '', // Pusty string, nie null
+	description: '',
 };
 export const USER_ROLES = process.env.USER_ROLES
 	? process.env.USER_ROLES.split(', ')

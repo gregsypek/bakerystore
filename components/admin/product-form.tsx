@@ -43,10 +43,16 @@ const ProductForm = ({
 	const router = useRouter();
 	const schema = type === 'Update' ? updateProductSchema : insertProductSchema;
 
-	const form = useForm({
+	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
 		defaultValues:
-			product && type === 'Update' ? product : productDefaultValues,
+			product && type === 'Update'
+				? {
+						...product,
+						isFeatured: product.isFeatured ?? false,
+						banner: product.banner ?? '',
+					}
+				: productDefaultValues,
 	});
 
 	// NOTE: React Compiler (nowość w React 19) automatycznie memoizuje komponenty dla lepszej wydajności

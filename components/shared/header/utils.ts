@@ -43,7 +43,7 @@ export function formatError(error: unknown): string {
 		//   'confirmPassword: Confirm password must be at least 6 characters long',
 		//   'confirmPassword: Passwords do not match'
 		// ]
-		const messages = error.errors.map((err) => {
+		const messages = error.issues.map((err) => {
 			return `${err.message}`;
 		});
 		console.log('🚀 ~ formatError ~ messages:', messages);

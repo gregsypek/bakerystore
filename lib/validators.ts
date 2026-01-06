@@ -15,26 +15,23 @@ const currency = z
 	);
 // NOTE: z.coerce lub z.transform w Zod zmienia typ między wejściem a wyjściem. Niezgodnos typów między schemaZod a defaultValues TypeScript widzi różnicę między z.input (przed transformacją) a z.output (po transformacji)
 // Schema for inserting products
+// Schema for inserting products
 export const insertProductSchema = z.object({
-	name: z.string().min(3, 'Product name must be at least 3 characters long'),
-	slug: z.string().min(3, 'Product slug must be at least 3 characters long'),
-	category: z.string().min(3, 'Category must be at least 3 characters long'),
-	brand: z.string().min(2, 'Brand must be at least 2 characters long'),
-	description: z
-		.string()
-		.min(10, 'Description must be at least 10 characters long'),
+	name: z.string().min(3, 'Name must be at least 3 characters'),
+	slug: z.string().min(3, 'Slug must be at least 3 characters'),
+	category: z.string().min(3, 'Category must be at least 3 characters'),
+	brand: z.string().min(3, 'Brand must be at least 3 characters'),
+	description: z.string().min(3, 'Description must be at least 3 characters'),
 	stock: z.number().int().min(0, 'Stock cannot be negative'),
-	images: z.array(z.string()).min(1, 'At least one image is required'),
-	isFeatured: z.boolean().optional().default(false),
-	banner: z.string().optional().nullable(),
+	images: z.array(z.string()).min(1, 'Product must have at least one image'),
+	isFeatured: z.boolean(),
+	banner: z.string().nullable(),
 	price: currency,
-	// rating: z.string().optional(), // Add if needed
-	// numReviews: z.string().optional(), // Add if needed
 });
 
 // Schema for updating products
 export const updateProductSchema = insertProductSchema.extend({
-	id: z.string().min(1, 'Product ID is required'),
+	id: z.string().min(1, 'Id is required'),
 });
 
 // Schema for signing users in
