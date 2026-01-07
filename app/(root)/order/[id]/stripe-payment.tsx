@@ -1,8 +1,5 @@
 import { FormEvent, useState } from 'react';
-import {
-	loadStripe,
-	StripeLinkAuthenticationElementChangeEvent,
-} from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import {
 	Elements,
 	LinkAuthenticationElement,
@@ -14,6 +11,7 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/lib/utils';
 import { SERVER_URL } from '@/lib/constants';
+console.log('🚀 ~ SERVER_URL:', SERVER_URL); //🚀 ~ SERVER_URL:"http://localhost:3000"
 
 const StripePayment = ({
 	priceInCents,
@@ -65,7 +63,7 @@ const StripePayment = ({
 				})
 				.finally(() => setIsLoading(false));
 		};
-		// return for StripeForm
+
 		return (
 			<form className="space-y-4" onSubmit={handleSubmit}>
 				<div className="text-xl">Stripe Checkout</div>
@@ -73,9 +71,7 @@ const StripePayment = ({
 				<PaymentElement />
 				<div>
 					<LinkAuthenticationElement
-						onChange={(e: StripeLinkAuthenticationElementChangeEvent) =>
-							setEmail(e.value.email)
-						}
+						onChange={(e) => setEmail(e.value.email)}
 					/>
 				</div>
 				<Button
@@ -90,7 +86,6 @@ const StripePayment = ({
 			</form>
 		);
 	};
-	// Return for StripePayment
 
 	return (
 		<Elements

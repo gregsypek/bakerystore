@@ -44,6 +44,8 @@ const SuccessPage = async (props: {
 				<Button asChild>
 					<Link href={`/order/${id}`}>View order</Link>
 				</Button>
+
+				{/* localhost:3000/order/1f151725-234a-4362-b72f-b24b37081100/stripe-payment-success?payment_intent=***payment_intent_client_secret=****t_secret_***z&redirect_status=succeeded */}
 			</div>
 		</div>
 	);
