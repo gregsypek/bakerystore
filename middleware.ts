@@ -1,6 +1,9 @@
+// middleware.ts
 import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 
-export const { auth: middleware } = NextAuth(authConfig);
+export default NextAuth(authConfig).auth;
 
-//his will now use the auth.config.ts file for the configuration and the auth.ts file for the middleware function.
+export const config = {
+	matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$).*)'],
+};

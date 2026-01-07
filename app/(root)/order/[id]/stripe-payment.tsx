@@ -36,7 +36,10 @@ const StripePayment = ({
 		const [isLoading, setIsLoading] = useState(false);
 		const [errorMessage, setErrorMessage] = useState('');
 		const [email, setEmail] = useState('');
-
+		console.log(
+			'Creating Payment Intent with return_url:',
+			`${SERVER_URL}/order/${orderId}/stripe-payment-success`
+		);
 		const handleSubmit = async (e: FormEvent) => {
 			e.preventDefault();
 

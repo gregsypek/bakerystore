@@ -8,7 +8,7 @@ const NotFoundPage = () => {
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen ">
 			<Image
-				src="images/logo.svg"
+				src="/images/logo.svg"
 				width={68}
 				height={68}
 				alt={`${APP_NAME} logo`}
