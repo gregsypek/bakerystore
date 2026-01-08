@@ -14,6 +14,7 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
 	const { id } = await props.params;
 
 	const order = await getOrderById(id);
+	console.log('🚀 ~ OrderDetailsPage ~ order:', order);
 	if (!order) notFound();
 
 	const session = await auth();
@@ -28,7 +29,7 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
 		const paymentIntent = await stripe.paymentIntents.create({
 			amount: Math.round(Number(order.totalPrice) * 100),
 			currency: 'USD',
-			metadata: { oderId: id },
+			metadata: { oderId: order.id },
 		});
 		client_secret = paymentIntent.client_secret;
 	}
