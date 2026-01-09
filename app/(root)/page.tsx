@@ -1,6 +1,7 @@
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // import sampleData from "../../db/sample-data";
+import DealCountdown from '@/components/deal-countdown';
 import ProductCarousel from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
 import IconBoxes from '@/components/ui/icon-boxes';
@@ -23,6 +24,7 @@ const HomePage = async () => {
 			)}
 			<ProductList data={latestProducts} title="Newest Arrivals" limit={4} />
 			<ViewAllProductsButton />
+			<DealCountdown />
 			<IconBoxes />
 		</>
 	);
