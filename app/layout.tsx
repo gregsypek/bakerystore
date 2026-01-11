@@ -34,8 +34,8 @@ export default function RootLayout({
 		 *
 		 * To jest jak zaklejenie taśmą lampki "check engine" w samochodzie!
 		 */
-		<html lang="en" suppressHydrationWarning>
-			<body className={`${inter.className} antialiased`}>
+		<html lang="en" suppressHydrationWarning className="overflow-y-hidden">
+			<body className={`${inter.className} antialiased overflow-x-hidden`}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="light"

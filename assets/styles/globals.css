@@ -90,6 +90,7 @@
 @layer base {
 	body {
 		@apply bg-background text-foreground;
+		@apply scrollbar-gutter-stable;
 	}
 }
 
@@ -105,6 +106,7 @@
 /* Uploadthing button text override */
 html.dark .upload-field .text-white {
 	color: #ffffff !important;
+	/* scrollbar-gutter: stable; */
 }
 
 .upload-field .text-white {

@@ -41,7 +41,15 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		function ({ addUtilities }) {
+			addUtilities({
+				'.scrollbar-gutter-stable': {
+					'scrollbar-gutter': 'stable',
+				},
+			});
+		},
+	],
 };
 
 export default config;
